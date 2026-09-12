@@ -1,0 +1,34 @@
+{
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "jest": "^30.5.1",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "name": "number-guessing-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test",
+    "server": "server"
+  },
+  "dependencies": {
+    "undici-types": "^6.21.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsx server/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muelvzz/number-guessing-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Muelvzz/number-guessing-game/issues"
+  },
+  "homepage": "https://github.com/Muelvzz/number-guessing-game#readme"
+}
