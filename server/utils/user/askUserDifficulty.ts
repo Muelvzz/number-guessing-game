@@ -7,14 +7,14 @@ enum gameDifficulty {
   Hard = 3
 }
 
-export default async function askUserDifficulty(): Promise<number | void> {
+export default async function askUserDifficulty(): Promise<number> {
   const rl = readline.createInterface({ input, output })
   
   try {
     while (true) {
       let gameMode: number = parseInt(await rl.question("Enter your choice: "))
       if (gameMode in gameDifficulty) {
-        console.log(`Great! You have selected ${gameDifficulty[gameMode]}`)
+        console.log(`Great! You have selected ${gameDifficulty[gameMode]} Difficulty.`)
         return gameMode
       }
       console.log("\nInvalid input, please try again.")

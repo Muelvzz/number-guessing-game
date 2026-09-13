@@ -1,2 +1,6 @@
-import test from "node:test";
-import assert from "node:assert/strict";
+import { describe } from "node:test";
+import { runSetNumOfGuessTest } from "./utils/game/setNumOfGuess.test.js";
+
+describe("Main Application Test Suite", () => {
+  runSetNumOfGuessTest();
+});
