@@ -1,4 +1,4 @@
-export default function setNumOfGuess(gameMode: number): number {
+export function setNumOfGuess(gameMode: number) {
   let numOfGuesses
 
   switch (gameMode) {
