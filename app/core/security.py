@@ -4,4 +4,5 @@
 # Source timestamp: 2026-10-11 15:36:16 UTC (1791732976)
 
 from fastapi.security import OAuth2PasswordBearer
+
 oa2_scheme = OAuth2PasswordBearer(tokenUrl='/user/login')
