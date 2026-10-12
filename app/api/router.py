@@ -4,7 +4,9 @@
 # Source timestamp: 2026-10-11 15:42:34 UTC (1791733354)
 
 from fastapi import APIRouter
+
 from .routes import game, user
+
 master_router = APIRouter()
 master_router.include_router(game.router)
 master_router.include_router(user.router)
