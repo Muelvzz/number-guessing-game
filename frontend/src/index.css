@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Timmana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Press+Start+2P&family=Timmana&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -7,7 +7,8 @@
   --color-white: #ffffff;
   --color-light-blue: #22D3EE;
   --font-inter: "Inter",;
-  --font-timmana: "Timmana"
+  --font-timmana: "Timmana";
+  --font-p2p: "Press Start 2P";
 }
 
 html {

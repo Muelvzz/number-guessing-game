@@ -1,6 +1,9 @@
 import decisionIcon from "../assets/decision-icon.png"
 import diceIcon from "../assets/dice-icon.png"
 import questionIcon from "../assets/question-icon.png"
+import logo from "../assets/logo.png"
+import heroCaption from "../assets/hero-caption.png"
+import Navigation from "../components/Navigation"
 
 type InfoProp = {
   img: string,
@@ -27,24 +30,24 @@ const infoData: InfoProp[] = [
 ]
 
 export default function LandingPage() {
-  const navButtonStyles: string = "rounded-lg border-2 border-solid border-light-blue text-md px-5 py-1 font-inter text-white cursor-pointer"
 
   return (
     <>
-      <nav className="bg-black py-2">
-        <section className="flex justify-between">
-          <span></span>
-          <span className="flex gap-x-5">
-            <button className={ navButtonStyles }>LOGIN</button>
-            <button className={ navButtonStyles }>REGISTER</button>
-            <button className={ navButtonStyles }>CONTACT US</button>
-          </span>
-        </section>
-      </nav>
+      <Navigation />
       <main className="bg-blue h-full text-white flex flex-col items-center justify-center">
         <article>
           <section>
-            <div></div>
+            <div>
+              <div className="flex justify-between">
+                <div>
+                  <img src={ heroCaption } alt="" />
+                  <h3 className="font-timmana">HILO (HIGH / LOWER) - A GAME MADE FOR NUMBER GEEKS LIKE YOU</h3>
+                </div>
+                <div>
+                  <img src={ logo } alt="" />
+                </div>
+              </div>
+            </div>
             <div className="py-10">
               <div className="flex flex-col md:p-24 lg:p-0 lg:grid lg:grid-cols-3 gap-x-15 gap-y-10">
                 {infoData.map((info, idx) => (
