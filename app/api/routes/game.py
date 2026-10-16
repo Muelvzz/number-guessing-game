@@ -3,11 +3,13 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 14:51:35 UTC (1791730295)
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.schemas.game import GameCreate, GameRead, GameUpd
 
 from ..dependencies import gameDep
+
+from app.core.security import get_current_user
 
 router = APIRouter(prefix="/game", tags=["Game"])
 
@@ -24,7 +26,8 @@ async def get_game(id: int, service: gameDep):
 
 
 @router.post("/", response_model=None)
-async def create_game(game: GameCreate, service: gameDep):
+async def create_game(game: GameCreate, service: gameDep, user_cred: int = Depends(get_current_user)):
+    print(user_cred)
     return await service.add(game)
 
 
