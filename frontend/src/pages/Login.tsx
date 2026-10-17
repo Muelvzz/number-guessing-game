@@ -1,21 +1,28 @@
 import { useState } from "react"
 import Navigation from "../components/Navigation"
 import SubmitImg from "../assets/top-right-arrow.svg?react"
+import { useAuth } from "../hooks/AuthContext"
+import { loginUserData } from "../service/api"
 
 export default function Login() {
+  const auth = useAuth()
+
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  if (!auth) throw new Error("[CLIENT] Login must be rendered within AuthProvider")
+
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload = {
-      email: email,
+      username: email,
       password: password
     }
-    console.log(`[CLIENT] payload: ${ JSON.stringify(payload, null, 2) }`)
+    const result = await loginUserData(payload)
+    await auth.login(result.access_token)
   }
 
   return (

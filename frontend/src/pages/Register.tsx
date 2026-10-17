@@ -1,21 +1,25 @@
 import { useState } from "react"
 import Navigation from "../components/Navigation"
 import SubmitImg from "../assets/top-right-arrow.svg?react"
+import { registerUserData } from "../service/api"
 
 export default function Register() {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [username, setUsername] = useState<string>("")
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
+  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload = {
       email: email,
+      username: username,
       password: password
     }
-    console.log(`[CLIENT] payload: ${ JSON.stringify(payload, null, 2) }`)
+    await registerUserData(payload)
   }
 
   return (
@@ -30,6 +34,13 @@ export default function Register() {
             </div>
             <form onSubmit={ handleSubmit } className="w-full flex flex-col gap-y-5">
               <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-2">
+                  <p className="text-white font-bold">Username</p>
+                  <input 
+                    type="text" value={ username } onChange={ handleUsername } 
+                    className="bg-blue border-none w-full rounded-lg px-4 py-2"
+                  />
+                </div>
                 <div className="flex flex-col gap-y-2">
                   <p className="text-white font-bold">Email Address</p>
                   <input 
@@ -53,7 +64,7 @@ export default function Register() {
                 type="submit" className="bg-light-blue px-4 py-2 rounded-lg w-full 
                 font-bold flex items-center justify-center gap-x-3 cursor-pointer"
               >
-                <span>Sign In</span>
+                <span>Sign Up</span>
                 <span>
                   <SubmitImg className="text-black"/>
                 </span>
