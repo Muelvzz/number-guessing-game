@@ -1,4 +1,4 @@
-const URL: string = "http://127.0.0.1:8000"
+const URL: string = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
 
 type UserPayload = {
   username?: string,
