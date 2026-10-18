@@ -14,7 +14,10 @@ from app.database.session import create_tables
 
 from .api.router import master_router
 
-origins: list[str] = ["http://localhost:5173", os.getenv("CLIENT_URL")]
+origins: list[str] = ["http://localhost:5173"]
+
+if os.getenv("CLIENT_URL"):
+    origins.append(os.getenv("CLIENT_URL"))
 
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI):
