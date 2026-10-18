@@ -3,20 +3,18 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 13:36:24 UTC (1791725784)
 
-import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scalar_fastapi import get_scalar_api_reference
-from app.config import cors_setting
+from .config import cors_setting
 
-from app.database.session import create_tables
+from .database.session import create_tables
 
 from .api.router import master_router
 
 origins: list[str] = [cors_setting.LOCALHOST_URL, cors_setting.CLIENT_URL]
-print(f"CLIENT URL: {cors_setting.CLIENT_URL}")
 
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI):

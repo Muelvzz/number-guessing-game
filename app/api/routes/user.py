@@ -8,7 +8,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app.api.schemas.user import UserCreate, UserRead
+from ...api.schemas.user import UserCreate, UserRead
 
 from ...core.security import oa2_scheme
 from ..dependencies import userDep

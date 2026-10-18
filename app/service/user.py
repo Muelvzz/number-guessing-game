@@ -11,7 +11,7 @@ from pwdlib import PasswordHash
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.api.schemas.user import UserCreate
+from ..api.schemas.user import UserCreate
 
 from ..config import security_setting
 from ..database.models import User

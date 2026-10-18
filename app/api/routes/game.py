@@ -5,11 +5,11 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.schemas.game import GameCreate, GameRead, GameUpd
+from ...api.schemas.game import GameCreate, GameRead, GameUpd
 
 from ..dependencies import gameDep
 
-from app.core.security import get_current_user
+from ...core.security import get_current_user
 
 router = APIRouter(prefix="/game", tags=["Game"])
 
