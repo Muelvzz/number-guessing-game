@@ -6,8 +6,10 @@ type UserPayload = {
   password: string
 }
 
+const cleanURL: string = URL.endsWith('/') ? URL.slice(0, -1) : URL;
+
 export async function loginUserData(payload: UserPayload) {
-  const url = `${URL}/user/login`
+  const url = `${cleanURL}/user/login`
   const newPayload = new URLSearchParams(payload)
 
   try {
@@ -44,7 +46,7 @@ export async function loginUserData(payload: UserPayload) {
 }
 
 export async function registerUserData(payload: UserPayload) {
-  const url: string = `${URL}/user/signup`
+  const url: string = `${cleanURL}/user/signup`
 
   try {
 
