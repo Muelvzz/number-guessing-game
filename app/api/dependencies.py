@@ -8,9 +8,9 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.session import get_session
-from app.service.game import GameService
-from app.service.user import UserService
+from database.session import get_session
+from service.game import GameService
+from service.user import UserService
 
 sessionDep = Annotated[AsyncSession, Depends(get_session)]
 

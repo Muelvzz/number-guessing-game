@@ -3,17 +3,19 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 13:36:24 UTC (1791725784)
 
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scalar_fastapi import get_scalar_api_reference
 
-from app.config import cors_setting
-from app.database.session import create_tables
-from app.api.router import master_router
+from config import cors_setting
+from database.session import create_tables
+from api.router import master_router
 
 origins: list[str] = [cors_setting.LOCALHOST_URL, cors_setting.CLIENT_URL]
 

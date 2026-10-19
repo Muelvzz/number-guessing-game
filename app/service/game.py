@@ -7,8 +7,8 @@ from datetime import datetime, timezone
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.schemas.game import GameCreate
-from app.database.models import Game
+from api.schemas.game import GameCreate
+from database.models import Game
 
 
 class GameService:

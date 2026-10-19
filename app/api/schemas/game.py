@@ -7,7 +7,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
-from app.database.models import Difficulty
+from database.models import Difficulty
 
 
 class GameCreate(BaseModel):

@@ -5,7 +5,7 @@
 
 from fastapi import APIRouter
 
-from app.api.routes import game, user
+from api.routes import game, user
 
 master_router = APIRouter()
 master_router.include_router(game.router)

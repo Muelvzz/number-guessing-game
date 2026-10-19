@@ -11,10 +11,10 @@ from pwdlib import PasswordHash
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.api.schemas.user import UserCreate
+from api.schemas.user import UserCreate
 
-from app.config import security_setting
-from app.database.models import User
+from config import security_setting
+from database.models import User
 
 pass_context = PasswordHash.recommended()
 
@@ -69,5 +69,4 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="That id is not available in the database")
         else:
             return user
-
 
