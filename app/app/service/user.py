@@ -11,10 +11,10 @@ from pwdlib import PasswordHash
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from api.schemas.user import UserCreate
+from app.api.schemas.user import UserCreate
 
-from config import security_setting
-from database.models import User
+from app.config import security_setting
+from app.database.models import User
 
 pass_context = PasswordHash.recommended()
 
