@@ -4,6 +4,7 @@ import ContactUs from './pages/ContactUs';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import HomePage from './pages/HomePage';
+import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './components/AuthProvider';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { index: true, path: "/contact-us", Component: ContactUs },
       { index: true, path: "/login", Component: Login },
       { index: true, path: "/register", Component: Register },
+      { index: true, path: "/*", Component: NotFound },
       {
         path: "/home",
         Component: ProtectedRoute,
