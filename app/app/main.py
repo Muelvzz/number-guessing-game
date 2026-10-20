@@ -9,13 +9,14 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scalar_fastapi import get_scalar_api_reference
 
+from app.api.router import master_router
 from app.config import cors_setting
 from app.database.session import create_tables
-from app.api.router import master_router
 
 origins: list[str] = [cors_setting.LOCALHOST_URL, cors_setting.CLIENT_URL]
 
