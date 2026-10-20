@@ -16,7 +16,6 @@ from .api.router import master_router
 
 origins: list[str] = ["http://localhost:5173", os.getenv("CLIENT_URL")]
 
-
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI):
     await create_tables()
@@ -24,16 +23,14 @@ async def lifespan_handler(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan_handler)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 app.include_router(master_router)
-
 
 @app.get("/scalar", include_in_schema=False)
 def get_scalar_docs():
