@@ -24,8 +24,7 @@ async def get_game(id: int, service: gameDep):
 
 
 @router.post("/", response_model=None)
-async def create_game(game: GameCreate, service: gameDep, user_cred: int = Depends(get_current_user)):
-    print(user_cred)
+async def create_game(game: GameCreate, service: gameDep):
     return await service.add(game)
 
 

@@ -3,7 +3,7 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 15:50:23 UTC (1791733823)
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import jwt
 from fastapi import HTTPException, status
@@ -54,7 +54,7 @@ class UserService:
             token = jwt.encode(
                 payload={
                     "user": {"name": user.username, "email": user.email},
-                    "exp": datetime.now() + timedelta(days=1.5),
+                    "exp": datetime.now(timezone.utc) + timedelta(days=1),
                 },
                 algorithm=security_setting.JWT_ALGORITHM,
                 key=security_setting.JWT_SECRET,

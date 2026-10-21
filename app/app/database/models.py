@@ -17,15 +17,16 @@ class Difficulty(str, Enum):
 
 
 class Game(SQLModel, table=True):
-    game_id: int = Field(default=None, primary_key=True)
+    game_id: int = Field(default=None, primary_key=True, nullable=False)
     is_complete: bool
     num_attempts: int
     difficulty: Difficulty
     date_played: datetime
+    owner_id: int = Field(default=None, foreign_key="user.id", ondelete="CASCADE", nullable=False)
 
 
 class User(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
+    id: int = Field(default=None, primary_key=True, nullable=False)
     username: str
     email: EmailStr
     password_hash: str

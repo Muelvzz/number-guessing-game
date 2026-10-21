@@ -8,6 +8,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
+from ..schemas.token import Token
+
 from app.api.schemas.user import UserCreate, UserRead
 from app.core.security import oa2_scheme
 from app.api.dependencies import userDep
@@ -20,7 +22,7 @@ async def create_account(user: UserCreate, service: userDep):
     return await service.add(user)
 
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 async def login_user(
     request_form: Annotated[OAuth2PasswordRequestForm, Depends()], service: userDep
 ):

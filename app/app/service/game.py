@@ -5,22 +5,28 @@
 
 from datetime import datetime, timezone
 
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.schemas.game import GameCreate
-from app.database.models import Game
+from app.database.models import Game, User
+
 
 
 class GameService:
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession, curr_user: int):
         self.session = session
+        self.curr_user = curr_user
 
     async def get(self, id: int) -> Game:
         return await self.session.get(Game, id)
 
     async def add(self, create_game: GameCreate) -> Game:
+
+
         new_game = Game(
-            **create_game.model_dump(), date_played=datetime.now(timezone.utc)
+            **create_game.model_dump(), date_played=datetime.now(timezone.utc),
+            owner_id=self.curr_user.id
         )
         self.session.add(new_game)
         await self.session.commit()
@@ -29,12 +35,20 @@ class GameService:
 
     async def update(self, id: int, game_update: dict) -> Game:
         game = await self.get(id)
-        game.sqlmodel_update(game_update)
-        self.session.add(game)
-        await self.session.commit()
-        await self.session.refresh(game)
-        return game
+        if game.owner_id == self.curr_user.id:
+            game.sqlmodel_update(game_update)
+            self.session.add(game)
+            await self.session.commit()
+            await self.session.refresh(game)
+            return game
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to delete another user's game data.")
+        
 
     async def delete(self, id: int) -> None:
-        await self.session.delete(await self.get(id))
-        await self.session.commit()
+        get_user = await self.get(id)
+        if get_user.owner_id == self.curr_user.id:
+            await self.session.delete(get_user)
+            await self.session.commit()
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to delete another user's game data.")

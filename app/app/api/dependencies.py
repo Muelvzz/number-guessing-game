@@ -11,12 +11,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database.session import get_session
 from app.service.game import GameService
 from app.service.user import UserService
+from ..core.security import get_current_user
 
 sessionDep = Annotated[AsyncSession, Depends(get_session)]
+getUserDep = Annotated[int, Depends(get_current_user)]
 
 
-def get_game_service(session: sessionDep):
-    return GameService(session)
+def get_game_service(session: sessionDep, getCurrUser: getUserDep):
+    return GameService(session, getCurrUser)
 
 
 def get_user_service(session: sessionDep):

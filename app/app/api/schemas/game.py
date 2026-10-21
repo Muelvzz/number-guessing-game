@@ -18,6 +18,7 @@ class GameCreate(BaseModel):
 
 class GameRead(GameCreate):
     date_played: datetime
+    owner_id: int
 
 
 class GameUpd(BaseModel):
