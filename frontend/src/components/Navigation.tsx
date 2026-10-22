@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom"
+import type { SetStateAction } from "react"
 
 // TODO: Add a hover animations at the LOGIN and REGISTER button
 // TODO: Add interaction of the Middle Tab bar
 // TODO: Provide a mobile UI of the navigation
 
-export default function Navigation() {
+type ShowModalProps = {
+  setShowModal: React.Dispatch<SetStateAction<"None" | "Login" | "Register">>
+}
+
+export default function Navigation({setShowModal}: ShowModalProps): React.ReactNode {
   const loginButtonStyle: string = "rounded-lg border-2 border-solid border-light-blue text-md px-6 py-2 font-inter text-light-blue font-bold cursor-pointer text-blue"
   const registerButtonStyle: string = "rounded-lg border-2 border-solid border-light-blue text-md px-6 py-2 font-inter text-blue cursor-pointer font-bold bg-light-blue"
 
@@ -27,11 +31,17 @@ export default function Navigation() {
             </ul>
           </div>
           <div className="flex gap-x-5 justify-end">
-            <button className={ loginButtonStyle }>
-              <Link to="/login">LOGIN</Link>
+            <button 
+              className={ loginButtonStyle }
+              onClick={() => setShowModal("Login")}
+            >
+              LOGIN
             </button>
-            <button className={ registerButtonStyle }>
-              <Link to="/register">REGISTER</Link>
+            <button 
+              className={ registerButtonStyle }
+              onClick={() => setShowModal("Register")}
+            >
+              REGISTER
             </button>
           </div>
         </section>

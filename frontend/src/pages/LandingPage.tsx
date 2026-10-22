@@ -1,13 +1,18 @@
+import { useState } from "react"
 import ControllerIcon from "../assets/controller-icon.svg?react"
 import PlayIcon from "../assets/play-icon.svg?react"
 import TopRightIcon from "../assets/top-right-arrow.svg?react"
-import Navigation from "../components/Navigation"
 
+import Navigation from "../components/Navigation"
+import AuthModal from "../components/AuthModal"
+
+// FIXME: Refactor the file by reducing the number of lines of code that exist with it.
 export default function LandingPage() {
+  const [showModal, setShowModal] = useState<"None" | "Login" | "Register">("None")
 
   return (
     <>
-      <Navigation />
+      <Navigation setShowModal={setShowModal}/>
       <main className="bg-blue h-full text-white flex flex-col">
         <article className="w-full flex flex-col justify-center items-center">
           <section className="bg-brand-dark text-white overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 flex flex-col justify-center items-center gap-y-5 lg:w-3/4">
@@ -36,13 +41,19 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                <a className="w-full sm:w-auto px-8 py-4 bg-light-blue text-black font-mono font-bold text-base rounded-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3">
+                <button 
+                  className="w-full sm:w-auto px-8 py-4 bg-light-blue text-black font-mono font-bold text-base rounded-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 cursor-pointer"
+                  onClick={() => setShowModal("Login")}  
+                >
                     <span>
                       <PlayIcon className="text-black"/>
                     </span>
                     <i className="fa-solid fa-play"></i> START PLAYING NOW
-                </a>
-                <button className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-brand-accent text-white font-semibold text-base rounded-xl transition-all flex items-center justify-center gap-2">
+                </button>
+                <button 
+                  className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-brand-accent text-white font-semibold text-base rounded-xl transition-all flex items-center justify-center gap-2"
+                  onClick={() => setShowModal("Register")}  
+                >
                     <span>Create Free Account</span>
                     <i className="fa-solid fa-arrow-right text-brand-accent"></i>
                     <span>
@@ -68,6 +79,11 @@ export default function LandingPage() {
           </section>
         </article>
       </main>
+
+      <AuthModal 
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
     </>
   )
 }
