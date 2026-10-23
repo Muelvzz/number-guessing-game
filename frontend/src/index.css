@@ -26,18 +26,18 @@ main {
   min-height: 100vh;
 }
 
-main, nav {
+nav {
   padding-inline: 1rem;
 }
 
 @media (min-width: 648px ) {
-  main, nav {
+  nav {
     padding-inline: 1.5rem;
   }
 }
 
 @media (min-width: 768px ) {
-  main, nav {
+  nav {
     padding-inline: 3rem;
   }
 }
@@ -52,7 +52,7 @@ p { font-size: 1rem; }
 small { font-size: 0.833rem; }
 
 @media (min-width: 1024px ) {
-  main, nav {
+  nav {
     padding-inline: 6rem;
   }
 }
