@@ -1,3 +1,5 @@
+import type { SetStateAction } from "react"
+
 const URL: string = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
 
 type UserPayload = {
@@ -6,7 +8,11 @@ type UserPayload = {
   password: string
 }
 
-export async function loginUserData(payload: UserPayload) {
+export async function loginUserData(
+  payload: UserPayload, 
+  setSubmitError: React.Dispatch<SetStateAction<string>>, 
+  setShowSubmitError: React.Dispatch<SetStateAction<boolean>>
+) {
   const url = `${URL}/user/login`
   const newPayload = new URLSearchParams(payload)
 
@@ -21,6 +27,11 @@ export async function loginUserData(payload: UserPayload) {
       credentials: "include"
     })
 
+    if (response.status === 403) {
+      setSubmitError("Invalid Email or Password, please try again.")
+      setShowSubmitError(true)
+    }
+
     if (!response.ok) {
       throw new Error(`[CLIENT] Response status: ${response.status} | ${response.statusText} `)
     }
@@ -28,6 +39,7 @@ export async function loginUserData(payload: UserPayload) {
     const result = await response.json()
     const token = result["access_token"]
     localStorage.setItem("access_token", token)
+    setShowSubmitError(false)
 
     return result
   } catch (error: unknown) {

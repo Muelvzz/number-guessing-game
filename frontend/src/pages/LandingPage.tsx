@@ -7,6 +7,8 @@ import Navigation from "../components/Navigation"
 import AuthModal from "../components/AuthModal"
 
 // FIXME: Refactor the file by reducing the number of lines of code that exist with it.
+// TODO: Web Responsiveness of the Page
+
 export default function LandingPage() {
   const [showModal, setShowModal] = useState<"None" | "Login" | "Register">("None")
 

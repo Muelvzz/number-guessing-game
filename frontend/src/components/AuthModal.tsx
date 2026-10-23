@@ -1,11 +1,63 @@
-import type { SetStateAction } from "react"
+import { useState, type SetStateAction } from "react"
+import { loginUserData, registerUserData } from "../service/api"
+import { useAuth } from "../hooks/AuthContext"
+import RingCircle from "../assets/ring-circle-icon.svg?react"
 
 type AuthModalProps = { 
   showModal: string,
   setShowModal: React.Dispatch<SetStateAction<"None" | "Login" | "Register">>
 }
 
+// TODO: Web Responsiveness
+// TODO: Create Custom Messages of the Login and Register
+
 export default function AuthModal({showModal, setShowModal}: AuthModalProps): React.ReactNode {
+
+  const auth = useAuth()
+
+  const [username, setUsername] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [pressSubmit, setPressSubmit] = useState<boolean>(false)
+  const [showSubmitError, setShowSubmitError] = useState<boolean>(false)
+  const [submitError, setSubmitError] = useState<string>("")
+
+  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {setUsername(e.target.value)}
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {setEmail(e.target.value)}
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {setPassword(e.target.value)}
+
+  if (!auth) throw new Error("[CLIENT] Login must be rendered within AuthProvider")
+
+  const handleSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    setPressSubmit(true)
+    setShowSubmitError(false)
+
+    e.preventDefault()
+    const payload = {
+      username: email,
+      password: password
+    }
+    
+    const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
+    setPressSubmit(false)
+    await auth.login(result.access_token)
+  }
+
+  const handleSubmitRegister = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    setPressSubmit(true)
+    setShowSubmitError(false)
+
+    e.preventDefault()
+    const payload = {
+      username: username,
+      email: email,
+      password: password
+    }
+
+    await registerUserData(payload)
+    setPressSubmit(false)
+  }
+
   if (showModal === "Login") {
     return (
       <>
@@ -19,21 +71,41 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
                       <span className="font-p2p text-2xl text-white">H<span className="text-light-blue">i</span>L<span className="text-light-blue">O</span> LOGIN</span>
                       <p className="text-xs text-slate-400 mt-1">Welcome back, geek! Access your profile.</p>
                   </div>
-                  <form className="space-y-4">
+                  <form onSubmit={handleSubmitLogin} className="space-y-4">
                       <div>
-                          <label className="block text-xs font-mono text-slate-300 mb-1">EMAIL / USERNAME</label>
-                          <input type="text" required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" placeholder="hilogeeks@gmail.com"/>
+                          <label className="block text-xs font-mono text-slate-300 mb-1">EMAIL</label>
+                          <input 
+                            type="text" 
+                            required 
+                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono"
+                            placeholder="hilogeeks@gmail.com"
+                            value={email}
+                            onChange={handleEmail}
+                          />
                       </div>
                       <div>
                           <label className="block text-xs font-mono text-slate-300 mb-1">PASSWORD</label>
-                          <input type="password" required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" placeholder="••••••••"/>
+                          <input 
+                            type="password" 
+                            required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={handlePassword}
+                          />
                       </div>
-                      <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all">
-                          LOG IN
+
+                      { showSubmitError && 
+                        <div className="w-full text-center">
+                          <small className="text-red-500 underline text-center">{submitError}</small>
+                        </div> }
+
+                      <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all flex justify-center items-center gap-x-2">
+                          { pressSubmit && <RingCircle className="text-white animate-spin size-5" viewBox="0 0 24 24"/> }
+                          {pressSubmit ? "PROCESSING" : "LOG IN"}
                       </button>
                   </form>
                   <div className="text-center text-xs text-slate-400">
-                      Don't have an account? <a href="#" onClick={() => setShowModal("Register")} className="text-light-blue hover:underline">Register now</a>
+                    Don't have an account? <a href="#" onClick={() => setShowModal("Register")} className="text-light-blue hover:underline">Register now</a>
                   </div>
               </div>
             </div>
@@ -55,21 +127,42 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
                       <span className="font-p2p text-2xl text-white">JOIN H<span className="text-light-blue">i</span>L<span className="text-light-blue">O</span></span>
                       <p className="text-xs text-slate-400 mt-1">Create your gamer profile & track stats.</p>
                   </div>
-                  <form className="space-y-4">
+                  <form onSubmit={handleSubmitRegister} className="space-y-4">
                       <div>
                           <label className="block text-xs font-mono text-slate-300 mb-1">USERNAME</label>
-                          <input type="text" required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" placeholder="NumberGeek42"/>
+                          <input 
+                            type="text" 
+                            required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                            placeholder="NumberGeek42"
+                            value={username}
+                            onChange={handleUsername}
+                          />
                       </div>
                       <div>
                           <label className="block text-xs font-mono text-slate-300 mb-1">EMAIL ADDRESS</label>
-                          <input type="email" required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" placeholder="hilogeeks@gmail.com"/>
+                          <input 
+                            type="email" 
+                            required 
+                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                            placeholder="hilogeeks@gmail.com"
+                            value={email}
+                            onChange={handleEmail}  
+                          />
                       </div>
                       <div>
                           <label className="block text-xs font-mono text-slate-300 mb-1">PASSWORD</label>
-                          <input type="password" required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" placeholder="••••••••"/>
+                          <input 
+                            type="password" 
+                            required 
+                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={handlePassword}
+                          />
                       </div>
                       <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all">
-                          CREATE ACCOUNT
+                          { pressSubmit && <RingCircle className="text-white animate-spin size-5" viewBox="0 0 24 24"/> }
+                          {pressSubmit ? "PROCESSING" : "CREATE ACCOUNT"}
                       </button>
                   </form>
                   <div className="text-center text-xs text-slate-400">

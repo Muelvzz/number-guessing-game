@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
-import ContactUs from './pages/ContactUs';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 
@@ -12,7 +11,6 @@ const router = createBrowserRouter([
     Component: AuthProvider,
     children: [
       { index: true, path: "/", Component: LandingPage },
-      { index: true, path: "/contact-us", Component: ContactUs },
       { index: true, path: "/*", Component: NotFound },
       {
         path: "/home",
