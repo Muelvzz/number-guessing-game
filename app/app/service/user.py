@@ -9,7 +9,7 @@ import jwt
 from fastapi import HTTPException, status
 from pwdlib import PasswordHash
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
+from sqlmodel import or_, select
 
 from app.api.schemas.user import UserCreate
 
@@ -24,11 +24,12 @@ class UserService:
         self.session = session
 
     async def add(self, credentials: UserCreate) -> User:
-        result = await self.session.execute(select(User).where(User.email == credentials.email))
+        result = await self.session.execute(select(User).where(or_(User.email == credentials.email, User.username == credentials.username)))
         already_user = result.scalar()
 
         if already_user:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That email already has an account.")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That email or username already has an account.")
+
         
         else:
 

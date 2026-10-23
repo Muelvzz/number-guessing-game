@@ -27,6 +27,6 @@ class Game(SQLModel, table=True):
 
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True, nullable=False)
-    username: str
+    username: str = Field(unique=True, nullable=False)
     email: EmailStr
     password_hash: str
