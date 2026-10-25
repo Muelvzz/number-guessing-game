@@ -9,6 +9,8 @@ from pydantic import BaseModel, Field
 
 from app.database.models import Difficulty
 
+from .user import UserRead
+
 
 class GameCreate(BaseModel):
     is_complete: bool = Field(default=False)
@@ -18,6 +20,8 @@ class GameCreate(BaseModel):
 
 class GameRead(GameCreate):
     date_played: datetime
+    owner_id: int
+    owner: UserRead
 
 
 class GameUpd(BaseModel):

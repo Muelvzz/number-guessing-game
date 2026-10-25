@@ -7,8 +7,14 @@ from jose import jwt, JWTError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+
 from app.api.schemas.token import TokenData
 from app.config import security_setting
+
+from ..database.models import User
+from ..database.session import get_session
 
 oa2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
@@ -33,11 +39,17 @@ def verify_access_token(token: str, credential_exp):
     return token_data
 
 
-def get_current_user(token: str = Depends(oa2_scheme)):
+async def get_current_user(token: str = Depends(oa2_scheme), db: AsyncSession = Depends(get_session)):  # noqa: B008
     credential_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Access code is invalid",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    return verify_access_token(token, credential_exception)
+    token = verify_access_token(token, credential_exception)
+
+    users = await db.execute(select(User).filter(User.username == token.id))
+
+    user = users.scalars().first()
+
+    return user

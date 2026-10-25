@@ -24,6 +24,7 @@ class SecuritySettings(BaseSettings):
     JWT_ALGORITHM: str
     model_config = base_config
 
+
 class CorsSettings(BaseSettings):
     CLIENT_URL: str
     LOCALHOST_URL: str = "http://localhost:5173"

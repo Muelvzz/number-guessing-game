@@ -8,9 +8,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
+from ..schemas.token import Token
+
 from app.api.schemas.user import UserCreate, UserRead
-from app.api.schemas.token import TokenData
-from app.core.security import get_current_user
+from app.core.security import oa2_scheme
 from app.api.dependencies import userDep
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -21,7 +22,7 @@ async def create_account(user: UserCreate, service: userDep):
     return await service.add(user)
 
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 async def login_user(
     request_form: Annotated[OAuth2PasswordRequestForm, Depends()], service: userDep
 ):
@@ -29,9 +30,10 @@ async def login_user(
     return {"access_token": token, "token_type": "bearer"}
 
 @router.get("/dashboard")
-async def get_dashboard(current_user: Annotated[TokenData, Depends(get_current_user)]):
-    return {"username": current_user.id}
+async def get_dashboard(token: Annotated[str, Depends(oa2_scheme)]):
+    return {"token": token}
 
 @router.get("/{id}")
 async def get_account(id: int, service: userDep):
     return await service.get_user(id)
+
