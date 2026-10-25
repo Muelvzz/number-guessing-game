@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 export type AuthData = {
   user: string | null;
   login: (data: string) => Promise<void>;
-  logout: (data: string) => void;
+  logout: () => void;
   isLoading: boolean
 }
 

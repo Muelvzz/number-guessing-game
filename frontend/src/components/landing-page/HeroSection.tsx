@@ -3,6 +3,8 @@ import ControllerIcon from "../../assets/controller-icon.svg?react"
 import PlayIcon from "../../assets/play-icon.svg?react"
 import TopRightIcon from "../../assets/top-right-arrow.svg?react"
 
+// TODO: Create multiple mappings to reduce redundantness
+
 export default function HeroSection({setShowModal}: {setShowModal: React.Dispatch<SetStateAction<"Login" | "Register" | "None">>}) {
   return (
     <>

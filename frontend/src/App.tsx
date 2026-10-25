@@ -10,8 +10,8 @@ const router = createBrowserRouter([
   {
     Component: AuthProvider,
     children: [
-      { index: true, path: "/", Component: LandingPage },
-      { index: true, path: "/*", Component: NotFound },
+      { path: "/", Component: LandingPage },
+      { path: "*", Component: NotFound },
       {
         path: "/home",
         Component: ProtectedRoute,

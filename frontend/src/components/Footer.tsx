@@ -1,3 +1,5 @@
+// TODO: Add functionalities
+
 export default function Footer() {
   return (
     <>

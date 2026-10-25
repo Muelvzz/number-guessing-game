@@ -31,6 +31,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
   const handleSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
     setPressSubmit(true)
     setShowSubmitError(false)
+    setSubmitError("")
 
     e.preventDefault()
     const payload = {
@@ -38,9 +39,19 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
       password: password
     }
     
-    const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
-    setPressSubmit(false)
-    await auth.login(result.access_token)
+    try {
+      const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
+      await auth.login(result.access_token)
+    } catch (error) {
+      if (!showSubmitError) {
+        setSubmitError("Unable to log in. Please try again.")
+        setShowSubmitError(true)
+      } else {
+        console.error(`[CLIENT] Unable to log in: ${error}`)
+      }
+    } finally {
+      setPressSubmit(false)
+    }
   }
 
   const handleSubmitRegister = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -160,7 +171,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
                             onChange={handlePassword}
                           />
                       </div>
-                      <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all">
+                      <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all flex justify-center items-center gap-x-2">
                           { pressSubmit && <RingCircle className="text-white animate-spin size-5" viewBox="0 0 24 24"/> }
                           {pressSubmit ? "PROCESSING" : "CREATE ACCOUNT"}
                       </button>

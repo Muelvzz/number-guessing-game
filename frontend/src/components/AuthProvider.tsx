@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type SetStateAction } from "react"
 import { useNavigate, Outlet } from "react-router-dom"
 import { AuthContext } from "../hooks/AuthContext"
 import type { AuthData } from "../hooks/AuthContext"
+import { validateAccessToken } from "../service/api"
 
 const useJwtId = (
   setUser: React.Dispatch<SetStateAction<string | null>>,
@@ -16,11 +17,20 @@ const useJwtId = (
           setUser(null)
           return
         }
-  
-        setUser(jwtToken)
+
+        if (await validateAccessToken(jwtToken)) {
+          setUser(jwtToken)
+        } else {
+          localStorage.removeItem("access_token")
+          setUser(null)
+        }
       } catch (error: unknown) {
         setUser(null)
-        console.error(`[CLIENT] unable to restore session: ${error}`)
+        if (error instanceof Error) {
+          console.error(`[CLIENT] unable to restore session: ${error.message}`)
+        } else {
+          console.error(`[CLIENT] unable to restore session: ${error}`)
+        }
       } finally {
         setIsLoading(false)
       }
@@ -40,11 +50,17 @@ export const AuthProvider = () => {
 
   const value = useMemo<AuthData>(() => {
     const login = async (data: string) => {
+      if (!(await validateAccessToken(data))) {
+        throw new Error("[CLIENT] Login returned an invalid access token")
+      }
+
+      localStorage.setItem("access_token", data)
       setUser(data)
       navigate("/home")
     }
 
     const logout = () => {
+      localStorage.removeItem("access_token")
       setUser(null)
       navigate("/", {replace: true})
     }
