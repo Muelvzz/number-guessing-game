@@ -3,6 +3,7 @@ import { useNavigate, Outlet } from "react-router-dom"
 import { AuthContext } from "../hooks/AuthContext"
 import type { AuthData } from "../hooks/AuthContext"
 import { validateAccessToken } from "../service/api"
+import { clearToken, getToken, setTokenWithExpiry } from "../service/setToken"
 
 const useJwtId = (
   setUser: React.Dispatch<SetStateAction<string | null>>,
@@ -12,7 +13,7 @@ const useJwtId = (
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const jwtToken: string | null = localStorage.getItem("access_token")
+        const jwtToken: string | null = getToken("access_token")
         if (!jwtToken) {
           setUser(null)
           return
@@ -21,7 +22,7 @@ const useJwtId = (
         if (await validateAccessToken(jwtToken)) {
           setUser(jwtToken)
         } else {
-          localStorage.removeItem("access_token")
+          clearToken("access_token")
           setUser(null)
         }
       } catch (error: unknown) {
@@ -54,13 +55,13 @@ export const AuthProvider = () => {
         throw new Error("[CLIENT] Login returned an invalid access token")
       }
 
-      localStorage.setItem("access_token", data)
+      setTokenWithExpiry("access_token", data)
       setUser(data)
       navigate("/home")
     }
 
     const logout = () => {
-      localStorage.removeItem("access_token")
+      clearToken("access_token")
       setUser(null)
       navigate("/", {replace: true})
     }
