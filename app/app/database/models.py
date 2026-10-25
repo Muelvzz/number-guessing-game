@@ -7,7 +7,7 @@ from datetime import datetime
 from enum import Enum
 
 from pydantic import EmailStr
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
 
 
 class Difficulty(str, Enum):
@@ -23,6 +23,7 @@ class Game(SQLModel, table=True):
     difficulty: Difficulty
     date_played: datetime
     owner_id: int = Field(default=None, foreign_key="user.id", ondelete="CASCADE", nullable=False)
+    owner: "User" = Relationship()
 
 
 class User(SQLModel, table=True):

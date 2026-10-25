@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
 from app.api.schemas.game import GameCreate
 from app.database.models import Game, User
@@ -17,6 +18,11 @@ class GameService:
     def __init__(self, session: AsyncSession, curr_user: int):
         self.session = session
         self.curr_user = curr_user
+
+    async def get_all(self, limit, skip) -> Game: 
+        result = await self.session.execute(select(Game).limit(limit).offset(skip))
+        game = result.scalars().all()
+        return game
 
     async def get(self, id: int) -> Game:
         return await self.session.get(Game, id)
