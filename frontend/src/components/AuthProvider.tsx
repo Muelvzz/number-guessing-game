@@ -5,6 +5,8 @@ import type { AuthData } from "../hooks/AuthContext"
 import { validateAccessToken } from "../service/api"
 import { clearToken, getToken, setTokenWithExpiry } from "../service/setToken"
 
+// FIXME: Move the current file to their respective folder.
+
 const useJwtId = (
   setUser: React.Dispatch<SetStateAction<string | null>>,
   setIsLoading: React.Dispatch<SetStateAction<boolean>>

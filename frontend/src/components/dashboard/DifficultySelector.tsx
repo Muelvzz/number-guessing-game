@@ -56,6 +56,8 @@ interface DifficultySelectorProps {
 
 // FIXME: Have the user profiles to be dynamic
 // FIXME: Remove the wordiness that sorround the file.
+// FIXME: Have the display to be responsive.
+// FIXME: Refactor the code to reduce the number of lines
 
 export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
   playerName = 'PixelPilot',

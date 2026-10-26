@@ -1,4 +1,5 @@
 // TODO: Add functionalities
+// FIXME: Refactor the codebase to reduce code redundancies
 
 export default function Footer() {
   return (

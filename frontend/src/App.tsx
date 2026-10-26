@@ -1,35 +1,53 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import HomePage from './pages/HomePage';
-import NotFound from './pages/NotFound';
-import GamePlay from './components/dashboard/GamePlay';
 
 import { AuthProvider } from './components/AuthProvider';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Suspense } from 'react';
+import LoadingPage from './components/LoadingPage';
 
 // TODO: Add a UseState for the GameDifficulty
 // TODO: Create a useContext for the user credentials.
+// FIXME: Redesign the Not Found page.
 
 const router = createBrowserRouter([
   {
     Component: AuthProvider,
     children: [
-      { path: "/", Component: LandingPage },
-      { path: "*", Component: NotFound },
+      {
+        path: "/",
+        lazy: async () => ({ Component: (await import('./pages/LandingPage')).default })
+      },
+      {
+        path: "*",
+        lazy: async () => ({ Component: (await import('./pages/NotFound')).default })
+      },
       {
         path: "/home",
         Component: ProtectedRoute,
-        children: [{index: true, Component: HomePage}]
+        children: [{
+          index: true, 
+          lazy: async () => ({ Component: (await import('./pages/HomePage')).default })
+        }]
       },
       {
         path: "/game",
         Component: ProtectedRoute,
-        children: [{index: true, Component: GamePlay}]
+        children: [{
+          index: true, 
+          lazy: async () => ({ Component: (await import('./components/dashboard/GamePlay')).default })
+        }]
       }
     ]
   }
-])
+]);
 
-const App = () => <RouterProvider router={ router }/>
+const App = () => {
+  return (
+    <Suspense fallback={<LoadingPage />}>
+      <RouterProvider router={ router }/>
+    </Suspense>
+  )
+}
+
 
 export default App

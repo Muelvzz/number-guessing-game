@@ -2,6 +2,7 @@ import { useState, type SetStateAction } from "react"
 import { loginUserData, registerUserData } from "../service/api"
 import { useAuth } from "../hooks/AuthContext"
 import RingCircle from "../assets/ring-circle-icon.svg?react"
+import LoadingPage from "./LoadingPage"
 
 type AuthModalProps = { 
   showModal: string,
@@ -10,6 +11,7 @@ type AuthModalProps = {
 
 // TODO: Web Responsiveness
 // TODO: Create Custom Messages of the Login and Register
+// FIXME: Refactor the file to reduce the number of lines of code
 
 export default function AuthModal({showModal, setShowModal}: AuthModalProps): React.ReactNode {
 
@@ -21,6 +23,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
   const [pressSubmit, setPressSubmit] = useState<boolean>(false)
   const [showSubmitError, setShowSubmitError] = useState<boolean>(false)
   const [submitError, setSubmitError] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {setUsername(e.target.value)}
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {setEmail(e.target.value)}
@@ -41,6 +44,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     
     try {
       const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
+      setIsLoading(true)
       await auth.login(result.access_token)
     } catch (error) {
       if (!showSubmitError) {
@@ -51,6 +55,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
       }
     } finally {
       setPressSubmit(false)
+      setIsLoading(false)
     }
   }
 
@@ -68,6 +73,8 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     await registerUserData(payload)
     setPressSubmit(false)
   }
+
+  if (isLoading) return <LoadingPage />
 
   if (showModal === "Login") {
     return (
