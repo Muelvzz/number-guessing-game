@@ -1,13 +1,13 @@
 // import { useNavigate } from "react-router-dom"
 
+// TODO: Add functionaliies of the buttons
+// FIXME: Make the page to be web responsive.
+
 export default function NotFound() {
 
   return (
     <>
       <main className="flex flex-col justify-center items-center bg-card-bg">
-
-          {/* <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-card-bg/10 rounded-full blur-3xl pointer-events-none"></div> */}
 
           <article className="flex flex-col justify-center">
             <div className="gap-12 flex flex-col justify-center items-center">
