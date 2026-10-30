@@ -22,12 +22,12 @@ async def create_account(user: UserCreate, service: userDep):
     return await service.add(user)
 
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=None)
 async def login_user(
     request_form: Annotated[OAuth2PasswordRequestForm, Depends()], service: userDep
 ):
-    token = await service.login(request_form.username, request_form.password)
-    return {"access_token": token, "token_type": "bearer"}
+    token, user = await service.login(request_form.username, request_form.password)
+    return {"access_token": token, "token_type": "bearer", "id": user}
 
 @router.get("/{id}")
 async def get_account(id: int, service: userDep):

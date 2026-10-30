@@ -4,6 +4,7 @@
 # Source timestamp: 2026-10-11 15:50:23 UTC (1791733823)
 
 from datetime import date, datetime, timedelta, timezone
+from typing import Any
 
 import jwt
 from fastapi import HTTPException, status
@@ -43,7 +44,7 @@ class UserService:
             await self.session.refresh(user)
             return user
 
-    async def login(self, email, password) -> str:
+    async def login(self, email, password) -> Any:
         result = await self.session.execute(select(User).where(User.email == email))
         user = result.scalar()
         if user is None or not pass_context.verify(password, user.password_hash):
@@ -60,7 +61,7 @@ class UserService:
                 algorithm=security_setting.JWT_ALGORITHM,
                 key=security_setting.JWT_SECRET,
             )
-            return token
+            return token, str(user.id)
 
     async def get_user(self, id: int):
         result = await self.session.execute(select(User.username, User.email).where(User.id == id))
