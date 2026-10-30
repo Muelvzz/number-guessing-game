@@ -16,6 +16,7 @@ class GameCreate(BaseModel):
     is_complete: bool = Field(default=False)
     num_attempts: int
     difficulty: Difficulty
+    time: int = Field(gt=0)
 
 
 class GameRead(GameCreate):
@@ -27,4 +28,5 @@ class GameRead(GameCreate):
 class GameUpd(BaseModel):
     is_complete: bool | None = Field(default=None)
     num_attempts: int | None = Field(default=None)
+    time: int | None = Field(default=None, gt=0)
     difficulty: Difficulty | None = Field(default=None)

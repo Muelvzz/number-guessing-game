@@ -16,9 +16,6 @@ const useJwtId = (
     const checkSession = async () => {
       try {
         const jwtToken: string | null = getToken("access_token")
-        if (!jwtToken) {
-          setUser(null)
-          return
         }
 
         if (await validateAccessToken(jwtToken)) {

@@ -8,6 +8,10 @@ from enum import Enum
 
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel, Relationship
+<<<<<<< HEAD
+=======
+from sqlalchemy import BigInteger
+>>>>>>> backend
 
 
 class Difficulty(str, Enum):
@@ -21,6 +25,7 @@ class Game(SQLModel, table=True):
     is_complete: bool
     num_attempts: int
     difficulty: Difficulty
+    time: int = Field(gt=0, description="Time is in seconds unit", nullable=False, sa_type=BigInteger)
     date_played: datetime
     owner_id: int = Field(default=None, foreign_key="user.id", ondelete="CASCADE", nullable=False)
     owner: "User" = Relationship()
