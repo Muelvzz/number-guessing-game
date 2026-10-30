@@ -1,5 +1,6 @@
 // TODO: Add functionalities
 // FIXME: Refactor the codebase to reduce code redundancies
+// FIXME: Improve the UI design flow
 
 export default function Footer() {
   return (

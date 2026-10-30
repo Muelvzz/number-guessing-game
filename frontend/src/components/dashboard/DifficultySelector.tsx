@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, X, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD';
-
-interface DifficultyConfig {
-  id: DifficultyLevel;
-  levelNumber: string;
-  name: string;
-  rangeText: string;
-  attemptsText: string;
-  cardDescription: string;
-  panelDescription: string;
-  rangeBadge: string;
-}
+import type { DifficultyConfig, DifficultyLevel } from '../../types/gameTypes';
 
 const DIFFICULTY_CONFIGS: Record<DifficultyLevel, DifficultyConfig> = {
   EASY: {
@@ -25,6 +13,7 @@ const DIFFICULTY_CONFIGS: Record<DifficultyLevel, DifficultyConfig> = {
     cardDescription: 'Small range. Quick rhythm. Trust your first win.',
     panelDescription: 'Quick warm-up. Perfect your rhythm.',
     rangeBadge: '0-100 Inclusive - 5 attempts',
+    attempts: 5
   },
   MEDIUM: {
     id: 'MEDIUM',
@@ -35,6 +24,7 @@ const DIFFICULTY_CONFIGS: Record<DifficultyLevel, DifficultyConfig> = {
     cardDescription: 'Wider range. Sharper focus. Test your intuition.',
     panelDescription: 'More range. Sharper instincts.',
     rangeBadge: '0-1,000 Inclusive - 8 attempts',
+    attempts: 8
   },
   HARD: {
     id: 'HARD',
@@ -45,6 +35,7 @@ const DIFFICULTY_CONFIGS: Record<DifficultyLevel, DifficultyConfig> = {
     cardDescription: '10,000 choices. Pure logic. Every guess counts.',
     panelDescription: '10k range. Ultimate test of logic.',
     rangeBadge: '0-10,000 Inclusive - 15 attempts',
+    attempts: 15
   },
 };
 
@@ -65,6 +56,7 @@ export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
   onChangePlayer,
 }) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('EASY');
+  const [numOfAttempts, setNumOfAttempts] = useState<number>(0)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const activeConfig = DIFFICULTY_CONFIGS[selectedDifficulty];
@@ -139,7 +131,7 @@ export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
                       </span>
                     ) : (
                       <button
-                        onClick={() => setSelectedDifficulty(key)}
+                        onClick={() => (setSelectedDifficulty(key), setNumOfAttempts(config.attempts))}
                         className="text-slate-400 hover:text-black transition-colors uppercase tracking-wider"
                       >
                         SELECT MODE
@@ -149,7 +141,7 @@ export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
 
                   {/* Card Body */}
                   <div
-                    onClick={() => setSelectedDifficulty(key)}
+                    onClick={() => (setSelectedDifficulty(key), setNumOfAttempts(config.attempts))}
                     className={`cursor-pointer transition-all duration-200 border-2 rounded-none p-8 h-70 flex flex-col justify-between items-center text-center ${
                       isSelected
                         ? 'bg-light-blue border-light-blue text-black shadow-lg scale-[1.01]'

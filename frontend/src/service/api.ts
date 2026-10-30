@@ -100,3 +100,26 @@ export async function registerUserData(payload: UserPayload) {
 
   }
 }
+
+export async function getUserData(id: number) {
+  const url: string = `${URL}/user/${id}`
+
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`[CLIENT] Response status: ${response.status}`)
+    }
+
+    const result = await response.json()
+    return result
+  } catch (error: unknown) {
+
+    if (error instanceof Error) {
+      console.error(`[CLIENT] ${error.message}`)
+    }
+    else {
+      console.error(`[CLIENT] Unknown Error: ${error}`)
+      throw error
+    }
+  }
+}

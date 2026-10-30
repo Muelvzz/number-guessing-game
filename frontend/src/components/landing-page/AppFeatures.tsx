@@ -30,6 +30,9 @@ const featurePayload: FeatureCard[] = [
   }
 ]
 
+// FIXME: Improve the UI design flow
+// FIXME: Add Web Responsiveness
+
 export default function AppFeatures() {
   return (
     <>

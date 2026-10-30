@@ -8,6 +8,7 @@ import Footer from "../components/Footer"
 
 // FIXME: Refactor the file by reducing the number of lines of code that exist with it.
 // TODO: Web Responsiveness of the Page
+// FIXME: Improve the UI design flow
 
 export default function LandingPage() {
   const [showModal, setShowModal] = useState<"None" | "Login" | "Register">("None")

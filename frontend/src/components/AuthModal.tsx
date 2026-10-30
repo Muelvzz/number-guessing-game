@@ -12,6 +12,7 @@ type AuthModalProps = {
 // TODO: Web Responsiveness
 // TODO: Create Custom Messages of the Login and Register
 // FIXME: Refactor the file to reduce the number of lines of code
+// FIXME: Improve the UI design flow
 
 export default function AuthModal({showModal, setShowModal}: AuthModalProps): React.ReactNode {
 

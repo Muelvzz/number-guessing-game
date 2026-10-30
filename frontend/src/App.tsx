@@ -7,7 +7,6 @@ import LoadingPage from './components/LoadingPage';
 
 // TODO: Add a UseState for the GameDifficulty
 // TODO: Create a useContext for the user credentials.
-// FIXME: Redesign the Not Found page.
 
 const router = createBrowserRouter([
   {

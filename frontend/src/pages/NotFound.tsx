@@ -2,6 +2,7 @@
 
 // TODO: Add functionaliies of the buttons
 // FIXME: Make the page to be web responsive.
+// FIXME: Improve the UI design flow
 
 export default function NotFound() {
 

@@ -3,6 +3,7 @@ import type { SetStateAction } from "react"
 // TODO: Add a hover animations at the LOGIN and REGISTER button
 // TODO: Add interaction of the Middle Tab bar
 // TODO: Provide a mobile UI of the navigation
+// FIXME: Improve the UI design flow
 
 type ShowModalProps = {
   setShowModal: React.Dispatch<SetStateAction<"None" | "Login" | "Register">>

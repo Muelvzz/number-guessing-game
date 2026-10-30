@@ -4,6 +4,7 @@ import PlayIcon from "../../assets/play-icon.svg?react"
 import TopRightIcon from "../../assets/top-right-arrow.svg?react"
 
 // FIXME: Create multiple mappings to reduce redundantness
+// FIXME: Improve the UI design flow
 
 export default function HeroSection({setShowModal}: {setShowModal: React.Dispatch<SetStateAction<"Login" | "Register" | "None">>}) {
   return (
