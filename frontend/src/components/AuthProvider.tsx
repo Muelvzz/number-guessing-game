@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState, type SetStateAction } from "react"
 import { useNavigate, Outlet } from "react-router-dom"
 import { AuthContext } from "../hooks/AuthContext"
 import type { AuthData } from "../hooks/AuthContext"
-import { validateAccessToken } from "../service/api"
-import { clearToken, getToken, setTokenWithExpiry } from "../service/setToken"
+import { validateAccessToken } from "../service/userApi"
+import { clearToken, getToken, setTokenWithExpiry } from "../utils/setToken"
 
 // FIXME: Move the current file to their respective folder.
 
@@ -15,31 +15,29 @@ const useJwtId = (
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const jwtToken: string | null = getToken("access_token")
-        }
+        const jwtToken: string | null = getToken("access_token");
 
         if (await validateAccessToken(jwtToken)) {
-          setUser(jwtToken)
+          setUser(jwtToken);
         } else {
-          clearToken("access_token")
-          setUser(null)
+          clearToken("access_token");
+          setUser(null);
         }
       } catch (error: unknown) {
-        setUser(null)
+        setUser(null);
         if (error instanceof Error) {
-          console.error(`[CLIENT] unable to restore session: ${error.message}`)
+          console.error(`[CLIENT] unable to restore session: ${error.message}`);
         } else {
-          console.error(`[CLIENT] unable to restore session: ${error}`)
+          console.error(`[CLIENT] unable to restore session: ${error}`);
         }
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    checkSession()
-  }, [setIsLoading, setUser])
-
-}
+    checkSession();
+  }, [setIsLoading, setUser]);
+};
 
 export const AuthProvider = () => {
   const [user, setUser] = useState<string | null>(null)

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         Component: ProtectedRoute,
         children: [{
           index: true, 
-          lazy: async () => ({ Component: (await import('./components/dashboard/GamePlay')).default })
+          lazy: async () => ({ Component: (await import('./pages/GamePlay')).default })
         }]
       }
     ]

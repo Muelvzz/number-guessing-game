@@ -1,24 +1,12 @@
 import type { SetStateAction } from "react";
 
 export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD';
-export type MaxNumOfAttempts = 5 | 8 | 15
-
-export type DifficultyConfig = {
-  id: DifficultyLevel;
-  levelNumber: string;
-  name: string;
-  rangeText: string;
-  attemptsText: string;
-  cardDescription: string;
-  panelDescription: string;
-  rangeBadge: string;
-  attempts: MaxNumOfAttempts
-}
+type MaxNumOfAttempts = 5 | 8 | 15
 
 export type GameConfig = {
   id: number
   difficulty: string
-  numOfAttempts: MaxNumOfAttempts
+  numOfAttempts: number
   isComplete: boolean
   timeTaken: number
   datePlayed: string

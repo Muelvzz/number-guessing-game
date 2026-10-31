@@ -20,6 +20,7 @@ class GameCreate(BaseModel):
 
 
 class GameRead(GameCreate):
+    game_id: int
     date_played: datetime
     owner_id: int
     owner: UserRead

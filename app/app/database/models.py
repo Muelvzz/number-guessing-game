@@ -8,16 +8,13 @@ from enum import Enum
 
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel, Relationship
-<<<<<<< HEAD
-=======
 from sqlalchemy import BigInteger
->>>>>>> backend
 
 
 class Difficulty(str, Enum):
-    easy = "easy"
-    medium = "medium"
-    hard = "hard"
+    easy = "EASY"
+    medium = "MEDIUM"
+    hard = "HARD"
 
 
 class Game(SQLModel, table=True):

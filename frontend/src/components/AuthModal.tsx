@@ -1,5 +1,5 @@
 import { useState, type SetStateAction } from "react"
-import { loginUserData, registerUserData } from "../service/api"
+import { loginUserData, registerUserData } from "../service/userApi"
 import { useAuth } from "../hooks/AuthContext"
 import RingCircle from "../assets/ring-circle-icon.svg?react"
 import LoadingPage from "./LoadingPage"
