@@ -46,16 +46,6 @@ export default function GameTerminal({
   const [guessFeedback, setGuessFeedback] = useState<GuessFeedback>("LOWER")
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {setCurrentUserGuess(parseInt(e.target.value))}
 
-  const handleUserSubmitNumber = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const nextAttempt: number = guessAttempts + 1
-    setGuessAttempts(nextAttempt)
-    setUserGuess([...userGuess, currentUserGuess])
-
-    if (currentUserGuess > randomNumber) setGuessFeedback("HIGHER")
-    if (currentUserGuess < randomNumber) setGuessFeedback("LOWER")
-  }
-
   const payload = {
     is_complete: isComplete,
     num_attempts: guessAttempts,
@@ -63,20 +53,36 @@ export default function GameTerminal({
     time: time
   }
 
-  if (guessAttempts === attempts) {
-    setIsComplete(false)
-    showToast("Out Of Attempts", `You have used all your attempts`, "ERROR")
-    const response = addGame(payload)
-    console.log(response)
-    navigate("/home")
-  }
+  const handleUserSubmitNumber = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const nextAttempt: number = guessAttempts + 1
+    setGuessAttempts(nextAttempt)
+    setUserGuess([...userGuess, currentUserGuess])
 
-  if (currentUserGuess === randomNumber) {
-    setIsComplete(true)
-    showToast("Game Victory", `You have solved a ${difficulty} difficulty in ${guessAttempts} attempts`)
-    const response = addGame(payload)
-    console.log(response)
-    navigate("/home")
+    if (currentUserGuess === randomNumber) {
+      setIsComplete(true)
+      showToast("Game Victory", `You have solved a ${difficulty} difficulty in ${guessAttempts} attempts`)
+      addGame(payload)
+    
+      setTimeout(() => {
+        navigate("/home")
+      }, 2000)
+      return
+    }
+
+    if (currentUserGuess > randomNumber) setGuessFeedback("HIGHER")
+    else if (currentUserGuess < randomNumber) setGuessFeedback("LOWER")
+
+    if (nextAttempt >= attempts) {
+      setIsComplete(false)
+      showToast("Out Of Attempts", `You have used all your attempts`, "ERROR")
+      addGame(payload)
+
+      setTimeout(() => {
+        navigate("/home")
+      }, 2000)
+    }
+
   }
 
   return (

@@ -28,11 +28,11 @@ const difficultyConfig: DifficultConfigType[] = [
     levelNumber: '01',
     name: 'EASY',
     rangeText: '0 - 100',
-    attemptsText: '5 attempts',
+    attemptsText: '8 attempts',
     cardDescription: 'Small range. Quick rhythm. Trust your first win.',
     panelDescription: 'Quick warm-up. Perfect your rhythm.',
-    rangeBadge: '0-100 Inclusive - 5 attempts',
-    attempts: 5,
+    rangeBadge: '0-100 Inclusive - 8 attempts',
+    attempts: 8,
     maxRange: 100
   },
   {
@@ -40,11 +40,11 @@ const difficultyConfig: DifficultConfigType[] = [
     levelNumber: '02',
     name: 'MEDIUM',
     rangeText: '0 - 1,000',
-    attemptsText: '8 attempts',
+    attemptsText: '12 attempts',
     cardDescription: 'Wider range. Sharper focus. Test your intuition.',
     panelDescription: 'More range. Sharper instincts.',
-    rangeBadge: '0-1,000 Inclusive - 8 attempts',
-    attempts: 8,
+    rangeBadge: '0-1,000 Inclusive - 12 attempts',
+    attempts: 12,
     maxRange: 1000
   },
   {

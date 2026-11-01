@@ -22,10 +22,12 @@ export default function Navigation({setShowModal}: ShowModalProps): React.ReactN
             </span>
           </div>
 
-          <div className="hidden md:flex justify-start items-center">
+          <div className="hidden md:flex justify-center items-center">
             <ul className="flex justify-between text-white font-inter gap-x-5 text-lg">
               <li className="cursor-pointer hover:text-light-blue transition">Leaderboard</li>
-              <li className="cursor-pointer hover:text-light-blue transition">FAQ</li>
+              <li className="cursor-pointer hover:text-light-blue transition" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="#faq">FAQ</a>
+              </li>
               <li className="cursor-pointer hover:text-light-blue transition">
                 <a onClick={() => setShowModal("Contact Us")}>Contact Us</a>
               </li>
@@ -71,7 +73,9 @@ export default function Navigation({setShowModal}: ShowModalProps): React.ReactN
           <div className="md:hidden absolute top-full left-0 w-full bg-[#181d27] border-t border-slate-800 py-5 px-6 flex flex-col gap-y-4 shadow-xl z-50">
             <ul className="flex flex-col text-white text-center font-inter gap-y-4 text-lg">
               <li className="cursor-pointer hover:text-light-blue transition" onClick={() => setIsMobileMenuOpen(false)}>Leaderboard</li>
-              <li className="cursor-pointer hover:text-light-blue transition" onClick={() => setIsMobileMenuOpen(false)}>FAQ</li>
+              <li className="cursor-pointer hover:text-light-blue transition" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="#faq">FAQ</a>
+              </li>
               <li className="cursor-pointer hover:text-light-blue transition" onClick={() => setIsMobileMenuOpen(false)}>
                 <a onClick={() => setShowModal("Contact Us")}>Contact Us</a>
               </li>

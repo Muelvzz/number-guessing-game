@@ -75,9 +75,21 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
       password: password
     }
 
-    await registerUserData(payload)
-    setPressSubmit(false)
-    setShowModal("Login")
+    try {
+      await registerUserData(payload, setSubmitError, setShowSubmitError)
+      showToast("Account Created!", "Please re-enter your credentials into the Login one more time.")
+      setIsLoading(true)
+    } catch (error) {
+      if (!showSubmitError) {
+        setSubmitError("Unable to register. Please try again")
+        setShowSubmitError(true)
+      } else {
+        console.error(`[CLIENT] Unable to log in: ${error}`)
+      }
+    } finally {
+      setPressSubmit(false)
+      setIsLoading(false)
+    }
   }
 
   const handleSubmitContactUs = async (e: React.ChangeEvent<HTMLFormElement>) => {

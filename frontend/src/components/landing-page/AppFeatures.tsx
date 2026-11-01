@@ -33,7 +33,7 @@ const featurePayload: FeatureCard[] = [
 export default function AppFeatures() {
   return (
     <>
-      <article>
+      <article id="features">
         <section className="py-20 bg-white relative">
             <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center">
                 

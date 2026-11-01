@@ -1,7 +1,5 @@
 import CpuIcon from "../assets/cpu-icon.svg?react"
 
-// FIXME: Make the Loaidng Page responsive.
-
 export default function LoadingPage() {
   return (
     <>

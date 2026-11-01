@@ -68,7 +68,11 @@ export async function validateAccessToken(token: string): Promise<boolean> {
   return true
 }
 
-export async function registerUserData(payload: UserPayload) {
+export async function registerUserData(
+  payload: UserPayload,
+  setSubmitError: React.Dispatch<SetStateAction<string>>, 
+  setShowSubmitError: React.Dispatch<SetStateAction<boolean>>
+) {
   const url: string = `${URL}/user/signup`
 
   try {
@@ -82,22 +86,26 @@ export async function registerUserData(payload: UserPayload) {
       credentials: "include"
     })
     if (!response.ok) {
-      throw new Error(`[CLIENT] Response status: ${response.status} `)
+      if (response.status === 400) {
+        setSubmitError("Invalid Email or Password, please try again.")
+        setShowSubmitError(true)
+      }
+      throw new Error(`[CLIENT] Response status: ${response.status} | ${response.statusText} `)
     }
 
     const result = await response.json()
+    setShowSubmitError(false)
     return result
 
-  } catch (error: unknown) {
-
+  } catch (error) {
     if (error instanceof Error) {
       console.error(`[CLIENT] ${error.message}`)
+      throw error
     }
     else {
       console.error(`[CLIENT] Unknown Error: ${error}`)
       throw error
     }
-
   }
 }
 

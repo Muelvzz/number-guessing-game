@@ -5,7 +5,7 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..schemas.token import Token
@@ -28,6 +28,11 @@ async def login_user(
 ):
     token, user = await service.login(request_form.username, request_form.password)
     return {"access_token": token, "token_type": "bearer", "id": user}
+
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+async def logout_user():
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.get("/dashboard")
