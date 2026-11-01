@@ -5,6 +5,7 @@ import generateRandomNumber from "../../../utils/generateRandomNumber"
 import { addGame } from "../../../service/gameApi"
 import type { DifficultyLevel } from "../../../types/gameTypes"
 import { useNavigate } from "react-router-dom"
+import { showToast } from "../../../utils/toastStore"
 
 type GuessFeedback = "HIGHER" | "LOWER"
 
@@ -16,9 +17,11 @@ type GameTerminalProps = {
   isComplete: boolean
   time: number
   difficulty: DifficultyLevel
+  guessAttempts: number
 
   setUserGuess: React.Dispatch<SetStateAction<number[]>>
   setCurrentUserGuess: React.Dispatch<SetStateAction<number>>
+  setGuessAttempts: React.Dispatch<SetStateAction<number>>
   setIsComplete: React.Dispatch<SetStateAction<boolean>>
 }
 
@@ -30,20 +33,18 @@ export default function GameTerminal({
   isComplete,
   time,
   difficulty,
+  guessAttempts,
   setUserGuess, 
   setCurrentUserGuess,
   setIsComplete,
+  setGuessAttempts
 }: GameTerminalProps) {
   const displayTime: string = formatTime(time)
   const navigate = useNavigate()
-  const [randomNumber, setRandomNumber] = useState(() => generateRandomNumber(maxRange));
+  const [randomNumber] = useState(() => generateRandomNumber(maxRange));
   
   const [guessFeedback, setGuessFeedback] = useState<GuessFeedback>("LOWER")
-  const [guessAttempts, setGuessAttempts] = useState<number>(0)
-
-  console.log(`Random Number: ${randomNumber}`)
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {setCurrentUserGuess(parseInt(e.target.value))}
-
 
   const handleUserSubmitNumber = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -51,28 +52,31 @@ export default function GameTerminal({
     setGuessAttempts(nextAttempt)
     setUserGuess([...userGuess, currentUserGuess])
 
-    const payload = {
-      is_complete: isComplete,
-      num_attempts: nextAttempt,
-      difficulty: difficulty,
-      time: time
-    }
-
-    if (guessAttempts === attempts) {
-      setIsComplete(false)
-      const response = await addGame(payload)
-      console.log(response)
-    }
-
-    if (currentUserGuess === randomNumber) {
-      setIsComplete(true)
-      const response = await addGame(payload)
-      console.log(response)
-      navigate("/home")
-    }
-
     if (currentUserGuess > randomNumber) setGuessFeedback("HIGHER")
     if (currentUserGuess < randomNumber) setGuessFeedback("LOWER")
+  }
+
+  const payload = {
+    is_complete: isComplete,
+    num_attempts: guessAttempts,
+    difficulty: difficulty,
+    time: time
+  }
+
+  if (guessAttempts === attempts) {
+    setIsComplete(false)
+    showToast("Out Of Attempts", `You have used all your attempts`, "ERROR")
+    const response = addGame(payload)
+    console.log(response)
+    navigate("/home")
+  }
+
+  if (currentUserGuess === randomNumber) {
+    setIsComplete(true)
+    showToast("Game Victory", `You have solved a ${difficulty} difficulty in ${guessAttempts} attempts`)
+    const response = addGame(payload)
+    console.log(response)
+    navigate("/home")
   }
 
   return (
@@ -101,7 +105,7 @@ export default function GameTerminal({
               </small>
 
               <h1 className="text-5xl text-light-blue font-extrabold font-inter tracking-widest">
-                {isComplete ? randomNumber : "??"}
+                {isComplete || guessAttempts === attempts ? randomNumber : "??"}
               </h1>
             </div>
 

@@ -1,0 +1,1 @@
+export type showModalType = "None" | "Login" | "Register" | "Contact Us"

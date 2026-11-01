@@ -1,4 +1,4 @@
-import DifficultySelector from "../components/dashboard/DifficultySelector"
+import DifficultySelector from "../components/dashboard/game/DifficultySelector"
 
 export default function HomePage() {
 

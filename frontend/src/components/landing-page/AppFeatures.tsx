@@ -30,9 +30,6 @@ const featurePayload: FeatureCard[] = [
   }
 ]
 
-// FIXME: Improve the UI design flow
-// FIXME: Add Web Responsiveness
-
 export default function AppFeatures() {
   return (
     <>
@@ -53,7 +50,7 @@ export default function AppFeatures() {
                 </div>
 
                 <div className="bg-white flex flex-col md:flex-row p-3 md:p-6 lg:p-10 rounded-2xl border-2 border-slate-200 shadow-xl w-full lg:w-2/3">
-                    <div className="grid md:grid-cols-3 gap-x-2 md:gap-x-6 lg:gap-x-12">
+                    <div className="grid md:grid-cols-3 gap-x-2 gap-y-4 md:gap-x-6 lg:gap-x-12">
 
                       {featurePayload.map((card, idx) => {
                         const IconComponent = card.image

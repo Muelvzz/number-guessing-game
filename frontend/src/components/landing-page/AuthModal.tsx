@@ -1,18 +1,19 @@
 import { useState, type SetStateAction } from "react"
-import { loginUserData, registerUserData } from "../service/userApi"
-import { useAuth } from "../hooks/AuthContext"
-import RingCircle from "../assets/ring-circle-icon.svg?react"
-import LoadingPage from "./LoadingPage"
+import { loginUserData, registerUserData } from "../../service/userApi"
+import { useAuth } from "../../hooks/AuthContext"
+import RingCircle from "../../assets/ring-circle-icon.svg?react"
+import LoadingPage from "../LoadingPage"
+import type { showModalType } from "../../types/userTypes"
+import { showToast } from "../../utils/toastStore"
 
 type AuthModalProps = { 
   showModal: string,
-  setShowModal: React.Dispatch<SetStateAction<"None" | "Login" | "Register">>
+  setShowModal: React.Dispatch<SetStateAction<showModalType>>
 }
 
 // TODO: Web Responsiveness
 // TODO: Create Custom Messages of the Login and Register
 // FIXME: Refactor the file to reduce the number of lines of code
-// FIXME: Improve the UI design flow
 
 export default function AuthModal({showModal, setShowModal}: AuthModalProps): React.ReactNode {
 
@@ -21,6 +22,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
   const [username, setUsername] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [message, setMessage] = useState<string>("")
   const [pressSubmit, setPressSubmit] = useState<boolean>(false)
   const [showSubmitError, setShowSubmitError] = useState<boolean>(false)
   const [submitError, setSubmitError] = useState<string>("")
@@ -29,6 +31,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {setUsername(e.target.value)}
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {setEmail(e.target.value)}
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {setPassword(e.target.value)}
+  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {setMessage(e.target.value)}
 
   if (!auth) throw new Error("[CLIENT] Login must be rendered within AuthProvider")
 
@@ -45,6 +48,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     
     try {
       const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
+      showToast("Login Successful", `Welcome Back ${email}!`)
       setIsLoading(true)
       await auth.login(result.access_token)
     } catch (error) {
@@ -72,6 +76,16 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     }
 
     await registerUserData(payload)
+    setPressSubmit(false)
+    setShowModal("Login")
+  }
+
+  const handleSubmitContactUs = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    setPressSubmit(true)
+    setShowSubmitError(false)
+
+    e.preventDefault()
+    console.log("Email Sent")
     setPressSubmit(false)
   }
 
@@ -194,5 +208,48 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     )
   }
 
-  return
+  if (showModal === "Contact Us") {
+    return (
+      <>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-card-bg border-2 border-slate-700 rounded-2xl w-full max-w-md p-6 sm:p-8 text-white relative shadow-2xl">
+              <button onClick={() => setShowModal("None")} className="absolute top-4 right-4 text-white hover:text-white text-lg cursor-pointer">
+                  <p>x</p>
+              </button>
+              <div className="text-center mb-5">
+                  <span className="font-p2p text-xl text-white">CONTACT US</span>
+                  <p className="text-slate-400 mt-1">Have feedback or questions? Send us a line!</p>
+              </div>
+              <form onSubmit={handleSubmitContactUs} className="space-y-4">
+                  <div>
+                      <label className="font-mono text-slate-300 mb-1 text-xs">EMAIL</label>
+                      <input 
+                        type="email" 
+                        required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                        placeholder="hilogeeks@gmail.com"
+                        value={email}
+                        onChange={handleEmail}
+                      />
+                  </div>
+                  <div>
+                      <label className="font-mono text-slate-300 mb-1 text-xs">MESSAGE</label>
+                      <textarea 
+                        rows={3} 
+                        required 
+                        className="w-full bg-slate-900 border border-slate-700 focus:border-brand-accent rounded-lg p-3 text-sm outline-none text-white font-mono" 
+                        placeholder="How can we help?"
+                        value={message}
+                        onChange={handleMessage}
+                      ></textarea>
+                  </div>
+                  <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all flex justify-center items-center gap-x-2">
+                      { pressSubmit && <RingCircle className="text-white animate-spin size-5" viewBox="0 0 24 24"/> }
+                      {pressSubmit ? "PROCESSING" : "SEND A MESSAGE"}
+                  </button>
+              </form>
+            </div>
+        </div>
+      </>
+    )
+  }
 }

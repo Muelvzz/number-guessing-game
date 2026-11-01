@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { AuthProvider } from './components/AuthProvider';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './provider/AuthProvider';
+import { ProtectedRoute } from './provider/ProtectedRoute';
 import { Suspense } from 'react';
 import LoadingPage from './components/LoadingPage';
+import PopUpModal from './components/PopUpModal';
 
 // TODO: Add a UseState for the GameDifficulty
 // TODO: Create a useContext for the user credentials.
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <Suspense fallback={<LoadingPage />}>
+      <PopUpModal/>
       <RouterProvider router={ router }/>
     </Suspense>
   )

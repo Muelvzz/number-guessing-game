@@ -6,7 +6,7 @@ type UserProviderProps = {
 }
 
 export const UserProvider = ({children}: UserProviderProps) => {
-  const [user, setUser] = useState<UserData | null>(null)
+  const [user] = useState<UserData | null>(null)
 
   return (
     <>    

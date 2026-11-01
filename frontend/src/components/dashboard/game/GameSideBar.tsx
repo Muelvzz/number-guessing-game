@@ -1,9 +1,11 @@
 type GameSideBarProps = {
   attempts: number
   numAttempts: number
+  guessAttempts: number
+  userGuess: number[]
 }
 
-export default function GameSideBar({attempts, numAttempts}: GameSideBarProps) {
+export default function GameSideBar({numAttempts, guessAttempts, userGuess}: GameSideBarProps) {
   return (
     <>
       <aside className="col-span-4 flex flex-col gap-4">
@@ -24,7 +26,7 @@ export default function GameSideBar({attempts, numAttempts}: GameSideBarProps) {
             </div>
 
             <div className="font-mono font-black text-3xl">
-              {String(attempts).padStart(2, "0")}
+              {String(guessAttempts).padStart(2, "0")}
               <span className="text-sm text-slate-400">
                 {" "}/ {String(numAttempts).padStart(2, "0")}
               </span>
@@ -39,7 +41,7 @@ export default function GameSideBar({attempts, numAttempts}: GameSideBarProps) {
               <div
                 key={index}
                 className={`flex-1 rounded-sm transition-colors duration-300 ${
-                  index < attempts
+                  index < guessAttempts
                     ? "bg-light-blue"
                     : "bg-slate-300"
                 }`}
@@ -65,8 +67,20 @@ export default function GameSideBar({attempts, numAttempts}: GameSideBarProps) {
 
           </div>
 
-          <div className="p-6 text-center text-xs text-slate-400">
-            Your guesses will appear here.
+          <div className="p-6 text-center text-slate-400">
+            {userGuess.length > 0 ? 
+              (<>
+                <div className="flex flex-wrap gap-x-2 gap-y-1 justify-center">
+                  {userGuess.map((guess) => (
+                    <>
+                      <div key={guess} className="bg-card-bg text-light-blue font-bold py-1 px-4 rounded-lg">
+                        <p>{guess}</p>
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </>) 
+              : "Your guesses will appear here."}
           </div>
 
         </section>

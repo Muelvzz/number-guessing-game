@@ -4,10 +4,10 @@
 // FIXME: Refactor the code to reduce the number of lines
 // FIXME: Refactor the code to handle multiple error handlers
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowRight, X, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import type { DifficultyLevel } from '../../types/gameTypes';
+import type { DifficultyLevel } from '../../../types/gameTypes';
 
 type DifficultConfigType = {
   id: number
@@ -104,7 +104,7 @@ export default function DifficultySelector() {
           </div>
 
           {/* Dynamic Player Badge */}
-          <div className="flex items-center gap-3 border border-slate-200 p-2 pr-4 bg-slate-50 self-stretch md:self-auto justify-between md:justify-start">
+          {/* <div className="flex items-center gap-3 border border-slate-200 p-2 pr-4 bg-slate-50 self-stretch md:self-auto justify-between md:justify-start">
             <div className="w-10 h-10 bg-black text-light-blue font-mono font-bold flex items-center justify-center text-sm">
               PX
             </div>
@@ -112,7 +112,7 @@ export default function DifficultySelector() {
               <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">PLAYER READY</span>
               <span className="text-sm font-bold text-black">Muelvzz</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </header>
 

@@ -8,12 +8,13 @@ import GameSideBar from "../components/dashboard/game/GameSideBar"
 export default function GamePlay() {
   const location = useLocation()
   const {difficulty, numAttempts, maxRange} = location.state
-  const [attempts, setAttempts] = useState<number>(numAttempts)
+  const [attempts] = useState<number>(numAttempts)
   const [time, setTime] = useState<number>(0)
   const [isComplete, setIsComplete] = useState<boolean>(false)
   const [secondsLeft, setSecondsLeft] = useState<number>(3)
   const [userGuess, setUserGuess] = useState<number[]>([])
   const [currentUserGuess, setCurrentUserGuess] = useState<number>(0)
+  const [guessAttempts, setGuessAttempts] = useState<number>(0)
   const isCountdownActive = secondsLeft > 0
 
   // Countdown Timer
@@ -42,12 +43,12 @@ useEffect(() => {
     <>
       {isCountdownActive && (<CountDownModal secondsLeft={secondsLeft} />)}
 
-      <article className="bg-white text-black font-inter border-t-4 border-light-blue px-12 py-12">
+      <article className="bg-white text-black font-inter border-t-4 border-light-blue px-6 md:px-12 py-12">
         <GameHeader 
           maxRange={maxRange} 
           difficulty={difficulty}
         />
-        <section className="mx-auto grid grid-cols-12 gap-5">
+        <section className="mx-auto flex flex-col lg:grid lg:grid-cols-12 gap-5">
           <GameTerminal 
             maxRange={maxRange} 
             attempts={attempts}
@@ -56,11 +57,18 @@ useEffect(() => {
             isComplete={isComplete}
             time={time}
             difficulty={difficulty}
+            guessAttempts={guessAttempts}
             setUserGuess={setUserGuess}
             setCurrentUserGuess={setCurrentUserGuess}
             setIsComplete={setIsComplete}
+            setGuessAttempts={setGuessAttempts}
           />
-          <GameSideBar attempts={attempts} numAttempts={numAttempts} />
+          <GameSideBar 
+            attempts={attempts} 
+            numAttempts={numAttempts} 
+            guessAttempts={guessAttempts}
+            userGuess={userGuess}
+          />
         </section>
       </article>
     </>

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
-import LoadingPage from "./LoadingPage";
+import LoadingPage from "../components/LoadingPage";
 
 // FIXME: Move to the current file to their respective folder
 

@@ -32,11 +32,17 @@ nav {
 
 @media (min-width: 648px ) {
   nav {
-    padding-inline: 1.5rem;
+    padding-inline: 1.25rem;
   }
 }
 
 @media (min-width: 768px ) {
+  nav {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1038px ) {
   nav {
     padding-inline: 3rem;
   }
@@ -49,10 +55,21 @@ h4 { font-size: 1.728rem; }
 h5 { font-size: 1.44rem; }
 h6 { font-size: 1.2rem; }
 p { font-size: 1rem; }
-small { font-size: 0.833rem; }
+small, button, li { font-size: 0.833rem; }
 
 @media (min-width: 1024px ) {
   nav {
     padding-inline: 6rem;
   }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.686rem; }
+  h2 { font-size: 2.388rem; }
+  h3 { font-size: 1.974rem; }
+  h4 { font-size: 1.628rem; }
+  h5 { font-size: 1.34rem; }
+  h6 { font-size: 1.1rem; }
+  p { font-size: 0.9rem; }
+  small, button, li { font-size: 0.7rem; }
 }

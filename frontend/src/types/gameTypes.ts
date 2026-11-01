@@ -1,7 +1,6 @@
 import type { SetStateAction } from "react";
 
 export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD';
-type MaxNumOfAttempts = 5 | 8 | 15
 
 export type GameConfig = {
   id: number
@@ -12,7 +11,7 @@ export type GameConfig = {
   datePlayed: string
 
   setDifficulty: React.Dispatch<SetStateAction<DifficultyLevel>>
-  setNumOfAttempts: React.Dispatch<SetStateAction<MaxNumOfAttempts>>
+  setNumOfAttempts: React.Dispatch<SetStateAction<5 | 8 | 15>>
   setIsComplete: React.Dispatch<SetStateAction<boolean>>
   setTimeTaken: React.Dispatch<SetStateAction<number>>
 }
