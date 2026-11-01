@@ -30,6 +30,10 @@ async def get_game(id: int, service: gameDep):
     else:
         return game
 
+@router.get('/mygame', response_model=list[GameRead])
+async def get_own_game(service: gameDep):
+    return await service.get_own_game()
+
 
 @router.post("/", response_model=None)
 async def create_game(game: GameCreate, service: gameDep):
