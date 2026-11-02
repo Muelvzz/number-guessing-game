@@ -27,6 +27,14 @@ class GameService:
     async def get(self, id: int) -> Game:
         return await self.session.get(Game, id)
 
+    async def get_own_game(self):
+
+        own_game = await self.session.execute(select(Game).where(Game.owner_id == self.curr_user.id))
+        
+        result = own_game.scalars().all()
+
+        return result
+
     async def add(self, create_game: GameCreate) -> Game:
 
 
