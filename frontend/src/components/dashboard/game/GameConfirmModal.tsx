@@ -2,16 +2,12 @@ import CpuIcon from "../../../assets/cpu-icon.svg?react"
 import type { modalConfirmStatus } from "../../../types/gameTypes"
 
 type GameConfirmModalTypes = {
-  isModalConfirmOpen: boolean
   setIsModalConfirmOpen: React.Dispatch<React.SetStateAction<boolean>>
-  modalConfirmStatus: modalConfirmStatus
   setModalConfirmStatus: React.Dispatch<React.SetStateAction<modalConfirmStatus>>
 }
 
 export default function GameConfirmModal({
-  isModalConfirmOpen,
   setIsModalConfirmOpen,
-  modalConfirmStatus,
   setModalConfirmStatus
 }: GameConfirmModalTypes) {
 

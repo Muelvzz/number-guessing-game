@@ -87,9 +87,7 @@ export default function GamePlay() {
 
       { isModalConfirmOpen && (
         <GameConfirmModal 
-          isModalConfirmOpen={isModalConfirmOpen}
           setIsModalConfirmOpen={setIsModalConfirmOpen}
-          modalConfirmStatus={modalConfirmStatus}
           setModalConfirmStatus={setModalConfirmStatus}
         />
       ) }
