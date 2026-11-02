@@ -4,9 +4,7 @@ export default function LoadingPage() {
   return (
     <>
       <article className="fixed inset-0 z-100 bg-[#090d16] flex flex-col items-center justify-center p-6 transition-opacity duration-500">
-          <div className="absolute inset-0 grid-pattern opacity-40"></div>
-          <div className="absolute inset-0 scanline pointer-events-none opacity-40"></div>
-
+        
           <div className="max-w-md w-full relative z-10 bg-black/90 border-2 border-card-bg/40 rounded-2xl p-8 shadow-2xl glow-cyan text-center space-y-6">
 
               <div className="relative w-20 h-20 mx-auto flex items-center justify-center">

@@ -78,7 +78,7 @@ export default function DifficultySelector() {
     navigate("/game", {
       state: {
         difficulty: difficulty,
-        numAttempts: numAttempts,
+        maxAttempt: numAttempts,
         maxRange: activeConfig.maxRange
       }
     });

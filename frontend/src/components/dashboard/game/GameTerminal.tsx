@@ -11,57 +11,52 @@ type GuessFeedback = "HIGHER" | "LOWER"
 
 type GameTerminalProps = {
   maxRange: number
-  attempts: number
-  userGuess: number[]
-  currentUserGuess: number
+  maxAttempt: number
   isComplete: boolean
   time: number
   difficulty: DifficultyLevel
-  guessAttempts: number
+  attemptUsed: number
 
   setUserGuess: React.Dispatch<SetStateAction<number[]>>
-  setCurrentUserGuess: React.Dispatch<SetStateAction<number>>
   setGuessAttempts: React.Dispatch<SetStateAction<number>>
   setIsComplete: React.Dispatch<SetStateAction<boolean>>
 }
 
 export default function GameTerminal({
   maxRange, 
-  attempts, 
-  userGuess, 
-  currentUserGuess, 
+  maxAttempt, 
   isComplete,
   time,
   difficulty,
-  guessAttempts,
+  attemptUsed,
   setUserGuess, 
-  setCurrentUserGuess,
   setIsComplete,
   setGuessAttempts
 }: GameTerminalProps) {
   const displayTime: string = formatTime(time)
   const navigate = useNavigate()
   const [randomNumber] = useState(() => generateRandomNumber(maxRange));
+  const [currentUserGuess, setCurrentUserGuess] = useState<number>(0)
   
   const [guessFeedback, setGuessFeedback] = useState<GuessFeedback>("LOWER")
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {setCurrentUserGuess(parseInt(e.target.value))}
 
   const payload = {
     is_complete: isComplete,
-    num_attempts: guessAttempts,
+    num_attempts: attemptUsed,
     difficulty: difficulty,
     time: time
   }
 
   const handleUserSubmitNumber = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const nextAttempt: number = guessAttempts + 1
+    const nextAttempt: number = attemptUsed + 1
     setGuessAttempts(nextAttempt)
-    setUserGuess([...userGuess, currentUserGuess])
+    setUserGuess((prev) => [...prev, currentUserGuess])
 
     if (currentUserGuess === randomNumber) {
       setIsComplete(true)
-      showToast("Game Victory", `You have solved a ${difficulty} difficulty in ${guessAttempts} attempts`)
+      showToast("Game Victory", `You have solved a ${difficulty} difficulty in ${attemptUsed} attempts`)
       addGame(payload)
     
       setTimeout(() => {
@@ -73,7 +68,7 @@ export default function GameTerminal({
     if (currentUserGuess > randomNumber) setGuessFeedback("HIGHER")
     else if (currentUserGuess < randomNumber) setGuessFeedback("LOWER")
 
-    if (nextAttempt >= attempts) {
+    if (nextAttempt >= maxAttempt) {
       setIsComplete(false)
       showToast("Out Of Attempts", `You have used all your attempts`, "ERROR")
       addGame(payload)
@@ -111,7 +106,7 @@ export default function GameTerminal({
               </small>
 
               <h1 className="text-5xl text-light-blue font-extrabold font-inter tracking-widest">
-                {isComplete || guessAttempts === attempts ? randomNumber : "??"}
+                {isComplete || attemptUsed === maxAttempt ? randomNumber : "??"}
               </h1>
             </div>
 

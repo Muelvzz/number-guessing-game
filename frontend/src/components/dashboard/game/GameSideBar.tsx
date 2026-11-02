@@ -1,11 +1,10 @@
 type GameSideBarProps = {
-  attempts: number
-  numAttempts: number
-  guessAttempts: number
+  maxAttempt: number
+  attemptUsed: number
   userGuess: number[]
 }
 
-export default function GameSideBar({numAttempts, guessAttempts, userGuess}: GameSideBarProps) {
+export default function GameSideBar({maxAttempt, attemptUsed, userGuess}: GameSideBarProps) {
   return (
     <>
       <aside className="col-span-4 flex flex-col gap-4">
@@ -26,9 +25,9 @@ export default function GameSideBar({numAttempts, guessAttempts, userGuess}: Gam
             </div>
 
             <div className="font-mono font-black text-3xl">
-              {String(guessAttempts).padStart(2, "0")}
+              {String(attemptUsed).padStart(2, "0")}
               <span className="text-sm text-slate-400">
-                {" "}/ {String(numAttempts).padStart(2, "0")}
+                {" "}/ {String(maxAttempt).padStart(2, "0")}
               </span>
             </div>
 
@@ -37,11 +36,11 @@ export default function GameSideBar({numAttempts, guessAttempts, userGuess}: Gam
           {/* Dynamic Attempt Bars */}
           <div className="flex gap-1 h-2">
 
-            {Array.from({ length: numAttempts }, (_, index) => (
+            {Array.from({ length: maxAttempt }, (_, index) => (
               <div
                 key={index}
                 className={`flex-1 rounded-sm transition-colors duration-300 ${
-                  index < guessAttempts
+                  index < attemptUsed
                     ? "bg-light-blue"
                     : "bg-slate-300"
                 }`}
