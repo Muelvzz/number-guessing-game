@@ -1,17 +1,37 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
-export type UserData = {
+type UserDataType = {
   id: number
   username: string
   email: string
 }
 
-export const UserContext = createContext<UserData | null>(null)
+export type UserContextType = {
+  userData: UserDataType,
+  handleUserData: (payload: UserDataType) => void
+}
 
-export const useUser = () => {
+type UserProviderProps = {
+  children: ReactNode
+}
+
+export const UserContext = createContext<UserContextType | null>(null)
+
+export function UserProvider({ children }: UserProviderProps) {
+  const [userData, setUserData] = useState<UserDataType>({id: 0, username: "", email: ""})
+  const handleUserData = async (payload: UserDataType) => {
+    setUserData(payload)
+  }
+
+  return (
+    <UserContext value={{ userData, handleUserData }}>
+      {children}  
+    </UserContext>
+  )
+}
+
+export function useUser() {
   const context = useContext(UserContext)
-
-  if (context === null) throw new Error("[CLIENT] There are no existing user's credentials")
-
+  if (!context) throw new Error("[CLIENT] useUser must be used within a UserProvider")
   return context
 }

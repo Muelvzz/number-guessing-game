@@ -64,8 +64,8 @@ class UserService:
             return token, str(user.id)
 
     async def get_user(self, id: int):
-        result = await self.session.execute(select(User.username, User.email).where(User.id == id))
-        user = result.mappings().all()
+        result = await self.session.execute(select(User.username, User.email, User.id).where(User.id == id))
+        user = result.mappings().first()
 
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="That id is not available in the database")

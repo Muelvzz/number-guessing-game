@@ -18,8 +18,8 @@ const featurePayload: FeatureCard[] = [
   },
   {
     image: TrophyIcon,
-    title: "VARIOUS DIFFICULTIES",
-    description: "Players get to choose any difficulty of their choice, whether it may be the Easy range (1-50) or the Extreme modes (1-10,000), explicitly designed to gauge your thinking speed and binary divide tactics.",
+    title: "PLAYER LEADERBOARD",
+    description: "A real-time player leaderboard is available for players to see how fast they beat each difficulty. Compare your optimal turn count against top number geeks globally. ",
     footCaption: "REAL-TIME RANKINGS"
   },
   {

@@ -1,10 +1,11 @@
 import { useState, type SetStateAction } from "react"
-import { loginUserData, registerUserData } from "../../service/userApi"
+import { getUserData, loginUserData, registerUserData } from "../../service/userApi"
 import { useAuth } from "../../hooks/AuthContext"
 import RingCircle from "../../assets/ring-circle-icon.svg?react"
 import LoadingPage from "../LoadingPage"
 import type { showModalType } from "../../types/userTypes"
 import { showToast } from "../../utils/toastStore"
+import { useUser } from "../../hooks/UserContext"
 
 type AuthModalProps = { 
   showModal: string,
@@ -27,6 +28,7 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
   const [showSubmitError, setShowSubmitError] = useState<boolean>(false)
   const [submitError, setSubmitError] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { handleUserData } = useUser()
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {setUsername(e.target.value)}
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {setEmail(e.target.value)}
@@ -47,10 +49,14 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     }
     
     try {
-      const result = await loginUserData(payload, setSubmitError, setShowSubmitError)
+      const loginResult = await loginUserData(payload, setSubmitError, setShowSubmitError)
+      const result = await getUserData(loginResult.id)
+      handleUserData(result)
+
       showToast("Login Successful", `Welcome Back ${email}!`)
       setIsLoading(true)
-      await auth.login(result.access_token)
+      await auth.login(loginResult.access_token)
+      
     } catch (error) {
       if (!showSubmitError) {
         setSubmitError("Unable to log in. Please try again.")

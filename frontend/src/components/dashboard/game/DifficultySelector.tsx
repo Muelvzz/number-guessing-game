@@ -8,6 +8,9 @@ import { useState } from 'react';
 import { ArrowRight, X, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { DifficultyLevel } from '../../../types/gameTypes';
+import { useUser } from '../../../hooks/UserContext';
+
+import CpuIcon from "../../../assets/cpu-icon.svg?react"
 
 type DifficultConfigType = {
   id: number
@@ -66,13 +69,15 @@ export default function DifficultySelector() {
   const [activeConfig, setActiveConfig] = useState<DifficultConfigType>(difficultyConfig[0])
   const [numAttempts, setNumAttempts] = useState<number>(0)
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("EASY")
-  const navigate = useNavigate();
+  const { userData } = useUser()
+  const navigate = useNavigate()
 
   const handleSelected = (data: DifficultConfigType) => {
     setDifficulty(data.name)
     setNumAttempts(data.attempts)
     setActiveConfig(data)
   }
+
   const handleConfirmModal = () => {
     setIsModalOpen(false);
     navigate("/game", {
@@ -83,6 +88,10 @@ export default function DifficultySelector() {
       }
     });
   };
+
+  const handleUserProfile = () => {
+    navigate("/profile")
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto min-h-screen bg-white text-black font-sans px-4 sm:px-8 py-6 sm:py-10 flex flex-col justify-between selection:bg-light-blue selection:text-black">
@@ -104,15 +113,15 @@ export default function DifficultySelector() {
           </div>
 
           {/* Dynamic Player Badge */}
-          {/* <div className="flex items-center gap-3 border border-slate-200 p-2 pr-4 bg-slate-50 self-stretch md:self-auto justify-between md:justify-start">
-            <div className="w-10 h-10 bg-black text-light-blue font-mono font-bold flex items-center justify-center text-sm">
-              PX
+          <button className="cursor-pointer hover:underline" onClick={handleUserProfile}>
+            <div className="flex items-center gap-3 border border-slate-200 p-2 pr-4 bg-slate-50 self-stretch md:self-auto justify-between md:justify-start">
+              <CpuIcon className='text-light-blue bg-black rounded-full size-12 p-2'/>
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">PLAYER</span>
+                <span className="font-bold text-black uppercase">{ userData.username }</span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">PLAYER READY</span>
-              <span className="text-sm font-bold text-black">Muelvzz</span>
-            </div>
-          </div> */}
+          </button>
         </div>
       </header>
 

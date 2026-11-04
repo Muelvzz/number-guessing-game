@@ -5,6 +5,7 @@ import { ProtectedRoute } from './provider/ProtectedRoute';
 import { Suspense } from 'react';
 import LoadingPage from './components/LoadingPage';
 import PopUpModal from './components/PopUpModal';
+import { UserProvider } from './hooks/UserContext';
 
 // TODO: Add a UseState for the GameDifficulty
 // TODO: Create a useContext for the user credentials.
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
           index: true, 
           lazy: async () => ({ Component: (await import('./pages/GamePlay')).default })
         }]
+      },
+      {
+        path: "/profile",
+        Component: ProtectedRoute,
+        children: [{
+          index: true,
+          lazy: async () => ({ Component: (await import('./components/dashboard/game/UserProfile')).default })
+        }]
       }
     ]
   }
@@ -45,7 +54,9 @@ const App = () => {
   return (
     <Suspense fallback={<LoadingPage />}>
       <PopUpModal/>
-      <RouterProvider router={ router }/>
+      <UserProvider>
+        <RouterProvider router={ router }/>
+      </UserProvider>
     </Suspense>
   )
 }

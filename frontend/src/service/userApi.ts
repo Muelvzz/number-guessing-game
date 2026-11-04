@@ -2,6 +2,12 @@ import type { SetStateAction } from "react"
 
 const URL: string = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
 
+export type getUserDataOutputType = {
+  id: number
+  username: string
+  email: string
+}
+
 type UserPayload = {
   username?: string,
   email?: string,
@@ -12,7 +18,7 @@ export async function loginUserData(
   payload: UserPayload, 
   setSubmitError: React.Dispatch<SetStateAction<string>>, 
   setShowSubmitError: React.Dispatch<SetStateAction<boolean>>
-): Promise<{ access_token: string }> {
+): Promise<{ access_token: string, id: string }> {
   const url = `${URL}/user/login`
   const newPayload = new URLSearchParams(payload)
 
@@ -38,7 +44,7 @@ export async function loginUserData(
     const result = await response.json()
     setShowSubmitError(false)
 
-    return { access_token: result.access_token }
+    return { access_token: result.access_token, id: result.id }
   } catch (error) {
     if (error instanceof Error) {
       console.error(`[CLIENT] ${error.message}`)
@@ -109,8 +115,9 @@ export async function registerUserData(
   }
 }
 
-export async function getUserData(id: number) {
-  const url: string = `${URL}/user/${id}`
+export async function getUserData(id: string): Promise<getUserDataOutputType> {
+  const numId: number = parseInt(id)
+  const url: string = `${URL}/user/${numId}`
 
   try {
     const response = await fetch(url)
@@ -118,8 +125,9 @@ export async function getUserData(id: number) {
       throw new Error(`[CLIENT] Response status: ${response.status}`)
     }
 
-    const result = await response.json()
+    const result: getUserDataOutputType = await response.json()
     return result
+
   } catch (error: unknown) {
 
     if (error instanceof Error) {
@@ -129,5 +137,7 @@ export async function getUserData(id: number) {
       console.error(`[CLIENT] Unknown Error: ${error}`)
       throw error
     }
+
+    return { id: 0, email: "", username: "" }
   }
 }
