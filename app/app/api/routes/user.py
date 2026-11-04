@@ -11,7 +11,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from ..schemas.token import Token
 
 from app.api.schemas.user import UserCreate, UserRead
-from app.core.security import oa2_scheme
+from app.core.security import get_current_user, oa2_scheme
+from app.database.models import User
 from app.api.dependencies import userDep
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -29,10 +30,20 @@ async def login_user(
     token, user = await service.login(request_form.username, request_form.password)
     return {"access_token": token, "token_type": "bearer", "id": user}
 
+@router.post("/logout")
+async def logout_user(
+    token: Annotated[str, Depends(oa2_scheme)], service: userDep
+):
+    await service.logout(token)
+    return {"detail": "Successfully logged out"}
+
+@router.get("/dashboard")
+async def get_dashboard(
+    token: Annotated[str, Depends(oa2_scheme)],
+    _current_user: Annotated[User, Depends(get_current_user)],
+):
+    return {"token": token}
+
 @router.get("/{id}")
 async def get_account(id: int, service: userDep):
     return await service.get_user(id)
-
-@router.get("/dashboard")
-async def get_dashboard(token: Annotated[str, Depends(oa2_scheme)]):
-    return {"token": token}
