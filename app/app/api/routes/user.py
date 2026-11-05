@@ -5,13 +5,18 @@
 
 from typing import Annotated
 
+<<<<<<< HEAD
 from fastapi import APIRouter, Depends, Response, status
+=======
+from fastapi import APIRouter, Depends
+>>>>>>> backend
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..schemas.token import Token
 
 from app.api.schemas.user import UserCreate, UserRead
-from app.core.security import oa2_scheme
+from app.core.security import get_current_user, oa2_scheme
+from app.database.models import User
 from app.api.dependencies import userDep
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -29,14 +34,18 @@ async def login_user(
     token, user = await service.login(request_form.username, request_form.password)
     return {"access_token": token, "token_type": "bearer", "id": user}
 
-
-@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
-async def logout_user():
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
-
+@router.post("/logout")
+async def logout_user(
+    token: Annotated[str, Depends(oa2_scheme)], service: userDep
+):
+    await service.logout(token)
+    return {"detail": "Successfully logged out"}
 
 @router.get("/dashboard")
-async def get_dashboard(token: Annotated[str, Depends(oa2_scheme)]):
+async def get_dashboard(
+    token: Annotated[str, Depends(oa2_scheme)],
+    _current_user: Annotated[User, Depends(get_current_user)],
+):
     return {"token": token}
 
 @router.get("/{id}")

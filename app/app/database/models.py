@@ -8,7 +8,7 @@ from enum import Enum
 
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel, Relationship
-from sqlalchemy import BigInteger
+from sqlalchemy import BigInteger, DateTime
 
 
 class Difficulty(str, Enum):
@@ -31,5 +31,14 @@ class Game(SQLModel, table=True):
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True, nullable=False)
     username: str = Field(unique=True, nullable=False)
-    email: EmailStr
+    email: EmailStr = Field(unique=True, nullable=False)
     password_hash: str
+
+
+class RevokedToken(SQLModel, table=True):
+    __tablename__ = "revoked_token"
+
+    token_hash: str = Field(primary_key=True, nullable=False)
+    expires_at: datetime = Field(
+        index=True, nullable=False, sa_type=DateTime(timezone=True)
+    )
