@@ -3,8 +3,6 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 15:36:16 UTC (1791732976)
 
-import hashlib
-
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -15,14 +13,10 @@ from sqlalchemy import select
 from app.api.schemas.token import TokenData
 from app.config import security_setting
 
-from ..database.models import RevokedToken, User
+from ..database.models import User
 from ..database.session import get_session
 
 oa2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
-
-
-def hash_access_token(token: str) -> str:
-    return hashlib.sha256(token.encode()).hexdigest()
 
 
 def verify_access_token(token: str, credential_exp):
@@ -53,14 +47,6 @@ async def get_current_user(token: str = Depends(oa2_scheme), db: AsyncSession = 
     )
 
     token_data = verify_access_token(token, credential_exception)
-
-    revoked_token = await db.execute(
-        select(RevokedToken.token_hash).where(
-            RevokedToken.token_hash == hash_access_token(token)
-        )
-    )
-    if revoked_token.scalar_one_or_none() is not None:
-        raise credential_exception
 
     users = await db.execute(select(User).filter(User.username == token_data.id))
 

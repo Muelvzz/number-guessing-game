@@ -31,11 +31,8 @@ async def login_user(
     return {"access_token": token, "token_type": "bearer", "id": user}
 
 @router.post("/logout")
-async def logout_user(
-    token: Annotated[str, Depends(oa2_scheme)], service: userDep
-):
-    await service.logout(token)
-    return {"detail": "Successfully logged out"}
+async def logout_user(_token: Annotated[str, Depends(oa2_scheme)]):
+    return {"detail": "Logged out. Remove the access token from the client."}
 
 @router.get("/dashboard")
 async def get_dashboard(

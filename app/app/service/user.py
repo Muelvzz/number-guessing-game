@@ -3,21 +3,19 @@
 # Bytecode version: 3.11a7e (3495)
 # Source timestamp: 2026-10-11 15:50:23 UTC (1791733823)
 
-from datetime import date, datetime, timedelta, timezone, UTC
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 import jwt
 from fastapi import HTTPException, status
 from pwdlib import PasswordHash
-from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import or_, select
 
 from app.api.schemas.user import UserCreate
 
 from app.config import security_setting
-from app.core.security import hash_access_token
-from app.database.models import RevokedToken, User
+from app.database.models import User
 
 pass_context = PasswordHash.recommended()
 
@@ -64,46 +62,6 @@ class UserService:
                 key=security_setting.JWT_SECRET,
             )
             return token, str(user.id)
-
-    async def logout(self, token: str) -> None:
-        try:
-            payload = jwt.decode(
-                token,
-                key=security_setting.JWT_SECRET,
-                algorithms=[security_setting.JWT_ALGORITHM],
-            )
-        except jwt.InvalidTokenError as exc:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Access token is invalid",
-                headers={"WWW-Authenticate": "Bearer"},
-            ) from exc
-
-        expiration = payload.get("exp")
-        if expiration is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Access token is invalid",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        expires_at = datetime.fromtimestamp(expiration, UTC)
-        token_hash = hash_access_token(token)
-        await self.session.execute(
-            delete(RevokedToken).where(
-                RevokedToken.expires_at <= datetime.now(UTC)
-            )
-        )
-        revoked_token = await self.session.execute(
-            select(RevokedToken.token_hash).where(
-                RevokedToken.token_hash == token_hash
-            )
-        )
-        if revoked_token.scalar_one_or_none() is None:
-            self.session.add(
-                RevokedToken(token_hash=token_hash, expires_at=expires_at)
-            )
-        await self.session.commit()
 
     async def get_user(self, id: int):
         result = await self.session.execute(select(User.username, User.email).where(User.id == id))
