@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Press+Start+2P&family=Timmana&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-black: #000000;
+  --color-blue: #0F172A;
+  --color-white: #ffffff;
+  --color-light-blue: #22D3EE;
+  --color-card-bg: #1e2638;
+
+  --font-inter: "Inter",;
+  --font-timmana: "Timmana";
+  --font-p2p: "Press Start 2P";
+  --font-mono: '"JetBrains Mono"', 'monospace';
+}
+
+html {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 100vh;
+}
+
+nav {
+  padding-inline: 1rem;
+}
+
+@media (min-width: 648px ) {
+  nav {
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (min-width: 768px ) {
+  nav {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1038px ) {
+  nav {
+    padding-inline: 3rem;
+  }
+}
+
+h1 { font-size: 2.986rem; }
+h2 { font-size: 2.488rem; }
+h3 { font-size: 2.074rem; }
+h4 { font-size: 1.728rem; }
+h5 { font-size: 1.44rem; }
+h6 { font-size: 1.2rem; }
+p { font-size: 1rem; }
+small, button, li { font-size: 0.833rem; }
+
+@media (min-width: 1024px ) {
+  nav {
+    padding-inline: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.686rem; }
+  h2 { font-size: 2.388rem; }
+  h3 { font-size: 1.974rem; }
+  h4 { font-size: 1.628rem; }
+  h5 { font-size: 1.34rem; }
+  h6 { font-size: 1.1rem; }
+  p { font-size: 0.9rem; }
+  small, button, li { font-size: 0.7rem; }
+}
