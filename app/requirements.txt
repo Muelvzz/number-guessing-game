@@ -63,6 +63,7 @@ scalar-fastapi==1.9.1
 sentry-sdk==2.72.0
 shellingham==1.5.4
 six==1.17.0
+slowapi==0.1.10
 SQLAlchemy==2.1.4
 sqlmodel==0.0.48
 starlette==1.7.0
