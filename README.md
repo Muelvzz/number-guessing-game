@@ -60,19 +60,19 @@ HILO is a full-stack number guessing game built with React and FastAPI. Players 
 
 ### Landing Page
 
-![HILO landing page](image.png)
+![HILO landing page](images/image.png)
 
 ### Authentication
 
-![HILO authentication interface](image-1.png)
+![HILO authentication interface](images/image-1.png)
 
 ### Gameplay
 
-![HILO game interface](image-2.png)
+![HILO game interface](images/image-2.png)
 
 ### Leaderboard
 
-![HILO leaderboard](image-3.png)
+![HILO leaderboard](images/image-3.png)
 
 ## Prerequisites
 
