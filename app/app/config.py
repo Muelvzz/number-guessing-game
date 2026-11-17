@@ -4,6 +4,7 @@
 # Source timestamp: 2026-10-11 15:16:48 UTC (1791731808)
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from slowapi import Limiter
 
 base_config = SettingsConfigDict(
     env_file="./.env", env_ignore_empty=True, extra="ignore"
@@ -34,3 +35,5 @@ class CorsSettings(BaseSettings):
 settings = DbSettings()
 security_setting = SecuritySettings()
 cors_setting = CorsSettings()
+
+limiter = Limiter(key_func = lambda request: request.client.host, strategy="fixed-window")

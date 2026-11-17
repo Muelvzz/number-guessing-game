@@ -20,19 +20,18 @@ from app.database.models import User
 
 pass_context = PasswordHash.recommended()
 
-
 class UserService:
     def __init__(self, session: AsyncSession):
         self.session = session
 
     async def add(self, credentials: UserCreate) -> User:
+
         result = await self.session.execute(select(User).where(or_(User.email == credentials.email, User.username == credentials.username)))
         already_user = result.scalar()
 
         if already_user:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That email or username already has an account.")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email or username already has an account.")
 
-        
         else:
 
             user = User(

@@ -48,10 +48,12 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     
     try {
       const loginResult = await loginUserData(payload, setSubmitError, setShowSubmitError)
-
-      showToast("Login Successful", `Welcome Back ${email}!`)
-      setIsLoading(true)
-      await auth.login(loginResult.access_token)
+      
+      if (loginResult) {
+        await auth.login(loginResult.access_token)
+        showToast("Login Successful", `Welcome Back ${email}!`)
+        setIsLoading(true)
+      } else return
       
     } catch (error) {
       if (!showSubmitError) {
@@ -78,16 +80,18 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
     }
 
     try {
-      await registerUserData(payload, setSubmitError, setShowSubmitError)
+      const registered: boolean = await registerUserData(payload, setSubmitError, setShowSubmitError)
+      if (!registered) return
+
       showToast("Account Created!", "Please re-enter your credentials into the Login one more time.")
       setIsLoading(true)
+      setShowModal("Login")
+
     } catch (error) {
-      if (!showSubmitError) {
-        setSubmitError("Unable to register. Please try again")
-        setShowSubmitError(true)
-      } else {
-        console.error(`[CLIENT] Unable to log in: ${error}`)
-      }
+      setSubmitError("Unable to register. Please try again")
+      setShowSubmitError(true)
+      console.error(`[CLIENT] Unable to register: ${error}`)
+
     } finally {
       setPressSubmit(false)
       setIsLoading(false)
@@ -207,6 +211,10 @@ export default function AuthModal({showModal, setShowModal}: AuthModalProps): Re
                             onChange={handlePassword}
                           />
                       </div>
+                      {showSubmitError &&
+                        <div role="alert" aria-live="polite" className="w-full text-center">
+                          <small className="text-red-500 underline">{submitError}</small>
+                        </div>}
                       <button type="submit" className="w-full bg-light-blue text-black font-mono font-bold py-3 rounded-lg uppercase tracking-wider text-sm transition-all flex justify-center items-center gap-x-2">
                           { pressSubmit && <RingCircle className="text-white animate-spin size-5" viewBox="0 0 24 24"/> }
                           {pressSubmit ? "PROCESSING" : "CREATE ACCOUNT"}

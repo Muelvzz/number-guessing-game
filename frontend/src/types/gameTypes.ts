@@ -16,3 +16,16 @@ export type GameConfig = {
   setIsComplete: React.Dispatch<SetStateAction<boolean>>
   setTimeTaken: React.Dispatch<SetStateAction<number>>
 }
+
+export type DifficultConfigType = {
+  id: number
+  levelNumber: string
+  name: DifficultyLevel
+  rangeText: string
+  attemptsText: string
+  cardDescription: string
+  panelDescription: string
+  rangeBadge: string
+  attempts: number
+  maxRange: number
+}

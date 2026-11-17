@@ -1,29 +1,11 @@
-// FIXME: Have the user profiles to be dynamic
-// FIXME: Remove the wordiness that sorround the file.
-// FIXME: Have the display to be responsive.
-// FIXME: Refactor the code to reduce the number of lines
-// FIXME: Refactor the code to handle multiple error handlers
-
 import { useState } from 'react';
 import { ArrowRight, X, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { DifficultyLevel } from '../../types/gameTypes';
 import { useUser } from '../../hooks/UserContext';
+import type { DifficultConfigType } from '../../types/gameTypes';
 
 import CpuIcon from "../../assets/cpu-icon.svg?react"
-
-type DifficultConfigType = {
-  id: number
-  levelNumber: string
-  name: DifficultyLevel
-  rangeText: string
-  attemptsText: string
-  cardDescription: string
-  panelDescription: string
-  rangeBadge: string
-  attempts: number
-  maxRange: number
-}
 
 const difficultyConfig: DifficultConfigType[] = [
   {
@@ -67,7 +49,7 @@ const difficultyConfig: DifficultConfigType[] = [
 export default function DifficultySelector() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeConfig, setActiveConfig] = useState<DifficultConfigType>(difficultyConfig[0])
-  const [numAttempts, setNumAttempts] = useState<number>(0)
+  const [numAttempts, setNumAttempts] = useState<number>(difficultyConfig[0].attempts)
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("EASY")
   const { userData } = useUser()
   const navigate = useNavigate()
